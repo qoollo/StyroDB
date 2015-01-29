@@ -60,6 +60,16 @@ namespace StyroDB.Tests.InMemoryTests
         }
 
         [TestMethod]
+        public void Read_NoLocksAndNoValue_ReturnFalse()
+        {
+            int key = 0;
+            ValueTestClass readValue;
+            var exist = _table.Read(key, out readValue);
+            exist.ShouldBeEqualTo(false);
+            readValue.ShouldBeEqualTo(null);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(TimeoutException))]
         public void Read_WriteLockAndTimeout_ThrowsException()
         {
@@ -76,48 +86,51 @@ namespace StyroDB.Tests.InMemoryTests
         #region Write Tests
         
         [TestMethod]
-        public void Write_NoLocks_ProcessOk()
+        public void Write_NoLocks_AddValue()
         {
+            int key = 0;
+            var value = new ValueTestClass();
+            _table.Write(key, value);
 
+            var readValue = _table.Read(key);
+            readValue.ShouldBeEqualTo(value);
+        }
+
+        [TestMethod]
+        public void Write_NoLocks_UpdateValue()
+        {
+            int key = 0;
+            var valueA = new ValueTestClass();
+            var valueB = new ValueTestClass();
+            _table.Write(key, valueA);
+            _table.Write(key, valueB);
+
+            var readValue = _table.Read(key);
+            readValue.ShouldBeEqualTo(valueB);
         }
 
         [TestMethod]
         public void Write_WriteLockEndsBeforeTimeout_ProcessOk()
         {
+            int timeout = 1000;
+            int key = 0;
+            var value = new ValueTestClass();
+            _table.EnterWriteLock(timeout);
+            _table.Write(key, value, 2 * timeout);
 
+            var readValue = _table.Read(key, 3 * timeout);
+            readValue.ShouldBeEqualTo(value);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(TimeoutException))]
         public void Write_WriteLockAndTimeout_ThrowsException()
         {
-
-        }
-
-        [TestMethod]
-        public void Write_ReadLockEndsBeforeTiemout_ProcessOk()
-        {
-
-        }
-
-        [TestMethod]
-        public void Write_ReadLockAndTimeout_ThrowsException()
-        {
-
-        }
-        
-        #endregion
-
-        #region Update Tests
-
-        [TestMethod]
-        public void Update_NoLocks_ProcessOk()
-        {
-
-        }
-
-        [TestMethod]
-        public void Update_WriteLockAndTimeout_ThrowsException()
-        {
+            int timeout = 1000;
+            int key = 0;
+            var value = new ValueTestClass();
+            _table.EnterWriteLock(2 * timeout);
+            _table.Write(key, value, timeout);
 
         }
         
@@ -128,13 +141,30 @@ namespace StyroDB.Tests.InMemoryTests
         [TestMethod]
         public void Delete_NoLocks_ProcessOk()
         {
+            int key = 0;
+            var value = new ValueTestClass();
+            _table.Write(key, value);
 
+            var existDel = _table.Delete(key);
+            existDel.ShouldBeEqualTo(true);
+
+            ValueTestClass readValue;
+            var exist = _table.Read(key, out readValue);
+            exist.ShouldBeEqualTo(false);
+            readValue.ShouldBeEqualTo(null);
         }
 
         [TestMethod]
         public void Delete_NoLocksAndNoValue_ThrowsException()
         {
+            int key = 0;
+            var existDel = _table.Delete(key);
+            existDel.ShouldBeEqualTo(false);
 
+            ValueTestClass readValue;
+            var exist = _table.Read(key, out readValue);
+            exist.ShouldBeEqualTo(false);
+            readValue.ShouldBeEqualTo(null);
         }
 
         #endregion

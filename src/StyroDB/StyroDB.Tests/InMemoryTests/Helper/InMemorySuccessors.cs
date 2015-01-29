@@ -10,7 +10,7 @@ namespace StyroDB.Tests.InMemoryTests.Helper
 {
     class MemoryTableControlLock<TKey, TValue> : MemoryTable<TKey, TValue>
     {
-        public MemoryTableControlLock(string tableName) : base(tableName){}
+        public MemoryTableControlLock(string tableName) : base(tableName) { }
 
         public void EnterWriteLock(int timeout)
         {
