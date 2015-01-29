@@ -6,33 +6,40 @@ using System.Threading.Tasks;
 
 namespace StyroDB.InMemrory
 {
-    internal sealed class MemoryTableInterface<TKey, TValue>
+    public class MemoryTableInterface<TKey, TValue>
     {
         private readonly MemoryTable<TKey, TValue> physicalTable;
+        private int _lockTimeout = 5000; // TODO: public property
 
-        public MemoryTableInterface(MemoryTable<TKey, TValue> table)
+        internal MemoryTableInterface(MemoryTable<TKey, TValue> table)
         {
             physicalTable = table;
         }
 
+        public int LockTimeout
+        {
+            get { return _lockTimeout; }
+            set { _lockTimeout = value; }
+        }
+
         public TValue Read(TKey key)
         {
-            return physicalTable.Read(key);
+            return physicalTable.Read(key, _lockTimeout);
         }
 
         public void Write(TKey key, TValue value)
         {
-            physicalTable.Write(key,value);
+            physicalTable.Write(key, value, _lockTimeout);
         }
 
         public void Update(TKey key, TValue value)
         {
-            physicalTable.Update(key, value);
+            physicalTable.Update(key, value, _lockTimeout);
         }
 
         public void Delete(TKey key)
         {
-            physicalTable.Delete(key);
+            physicalTable.Delete(key, _lockTimeout);
         }
 
     }

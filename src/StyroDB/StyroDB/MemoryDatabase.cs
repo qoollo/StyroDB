@@ -6,25 +6,31 @@ using System.Threading.Tasks;
 
 namespace StyroDB.InMemrory
 {
-    internal sealed class MemoryDatabase
+    sealed class MemoryDatabase:IDisposable
     {
-        private Dictionary<String, Object> tables;
+        private Dictionary<String, Object> _tables;
 
         public MemoryTableInterface<TKey, TValue> CreateTable<TKey, TValue>(String name)
         {
             dynamic newTable = new MemoryTable<TKey, TValue>(name);
-            tables.Add(name, newTable);
+            _tables.Add(name, newTable);
             return new MemoryTableInterface<TKey, TValue>(newTable);
         }
 
         public MemoryTableInterface<TKey, TValue> GetTable<TKey, TValue>(String name)
         {
-            return new MemoryTableInterface<TKey,TValue>(tables[name] as MemoryTable<TKey, TValue>);
+            return new MemoryTableInterface<TKey,TValue>(_tables[name] as MemoryTable<TKey, TValue>);
         }
 
         public void DeleteTable(String name)
         {
-            tables.Remove(name);
+            _tables.Remove(name);
+        }
+
+        public void Dispose()
+        {
+            // вызывать диспоз каждой таблицы
+            //throw new NotImplementedException();
         }
     }
 }

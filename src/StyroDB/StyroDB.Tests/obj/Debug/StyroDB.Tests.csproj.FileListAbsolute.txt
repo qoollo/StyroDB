@@ -1,0 +1,9 @@
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\obj\Debug\StyroDB.Tests.csprojResolveAssemblyReference.cache
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\bin\Debug\StyroDB.Tests.dll
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\bin\Debug\StyroDB.Tests.pdb
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\bin\Debug\FluentAssert.dll
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\bin\Debug\StyroDB.InMemrory.dll
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\bin\Debug\StyroDB.InMemrory.pdb
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\bin\Debug\FluentAssert.pdb
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\obj\Debug\StyroDB.Tests.dll
+C:\Work\StyroDB\src\StyroDB\StyroDB.Tests\obj\Debug\StyroDB.Tests.pdb

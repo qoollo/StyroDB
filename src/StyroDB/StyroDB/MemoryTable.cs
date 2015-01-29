@@ -4,16 +4,16 @@ using System.Threading;
 
 namespace StyroDB.InMemrory
 {
-    internal sealed class MemoryTable<TKey, TValue>
+    internal class MemoryTable<TKey, TValue>:IDisposable
     {
         private const int LockTimeout = 5000;
-        private readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim();
-        private readonly Dictionary<TKey, TValue> _innerCache = new Dictionary<TKey, TValue>();
-        private String name;
+        protected readonly ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim();
+        protected readonly Dictionary<TKey, TValue> _innerCache = new Dictionary<TKey, TValue>();
+        private String _name;
 
         public MemoryTable(String tableName)
         {
-            name = tableName;
+            _name = tableName;
         }
 
         public TValue Read(TKey key, int timeout = LockTimeout)
@@ -117,7 +117,7 @@ namespace StyroDB.InMemrory
             }
         }
 
-        ~MemoryTable()
+        public void Dispose()
         {
             if (_cacheLock != null) _cacheLock.Dispose();
         }
