@@ -1,4 +1,0 @@
-C:\Work\StyroDB\src\StyroDB\StyroDB\bin\Debug\StyroDB.InMemrory.dll
-C:\Work\StyroDB\src\StyroDB\StyroDB\bin\Debug\StyroDB.InMemrory.pdb
-C:\Work\StyroDB\src\StyroDB\StyroDB\obj\Debug\StyroDB.InMemrory.dll
-C:\Work\StyroDB\src\StyroDB\StyroDB\obj\Debug\StyroDB.InMemrory.pdb
