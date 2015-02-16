@@ -8,9 +8,9 @@ using StyroDB.InMemrory.Exceptions;
 
 namespace StyroDB.InMemrory
 {
-    sealed class MemoryDatabase:IDisposable
+    public class MemoryDatabase : IMemoryDatabase, IDisposable
     {
-        private Dictionary<String, BasicTable> _tables;
+        private readonly Dictionary<String, BasicTable> _tables;
         private bool _disposed;
 
         public MemoryDatabase()

@@ -100,8 +100,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="InMemoryTests\Helper\InMemorySuccessors.cs" />
-    <Compile Include="InMemoryTests\Helper\MemoryTableHelper.cs" />
+    <Compile Include="AdapterTests\ConnectionTests.cs" />
+    <Compile Include="Helper\InMemorySuccessors.cs" />
+    <Compile Include="Helper\TestMemoryDatabase.cs" />
     <Compile Include="InMemoryTests\MemoryTableTests.cs" />
     <Compile Include="InMemoryTests\MemoryTableInterafceTests.cs" />
     <Compile Include="InMemoryTests\MemoryDatabaseTests.cs" />
@@ -109,14 +110,16 @@
     <Compile Include="TestData\ValueTestClass.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\StyroDB.Adapter\StyroDB.Adapter.csproj">
+      <Project>{955996C4-37F6-47CA-B525-69AAE3E50584}</Project>
+      <Name>StyroDB.Adapter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StyroDB\StyroDB.InMemory.csproj">
       <Project>{a44cde0d-12d9-4bbb-b352-b7a51e070fbb}</Project>
       <Name>StyroDB.InMemory</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestHelpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="FluentAssert.License.txt" />
     <Content Include="FluentAssert.Provenance.txt" />

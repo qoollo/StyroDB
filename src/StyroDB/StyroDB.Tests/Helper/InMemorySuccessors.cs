@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using StyroDB.InMemrory;
 
-namespace StyroDB.Tests.InMemoryTests.Helper
+namespace StyroDB.Tests.Helper
 {
     class MemoryTableControlLock<TKey, TValue> : MemoryTable<TKey, TValue>
     {
