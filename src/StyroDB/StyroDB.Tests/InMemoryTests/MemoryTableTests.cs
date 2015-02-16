@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using FluentAssert;
@@ -26,6 +27,7 @@ namespace StyroDB.Tests.InMemoryTests
         }
 
         #region Read Tests
+
         [TestMethod]
         public void Read_NoLocks_ReturnsValue()
         {
@@ -169,5 +171,27 @@ namespace StyroDB.Tests.InMemoryTests
 
         #endregion
 
+        #region Select
+
+        [TestMethod]
+        public void Select_NoLocks_ReturnEnumerable()
+        {
+            var dict = new List<KeyValuePair<int, ValueTestClass>>()
+            {
+                new KeyValuePair<int, ValueTestClass>(0, new ValueTestClass(0, "string1")),
+                new KeyValuePair<int, ValueTestClass>(1, new ValueTestClass(1, "string2")),
+                new KeyValuePair<int, ValueTestClass>(2, new ValueTestClass(2, "string1"))
+            };
+            foreach (var item in dict)
+            {
+                _table.Write(item.Key, item.Value);
+            }
+
+            Func<IEnumerable<ValueTestClass>, IEnumerable<ValueTestClass>> func =
+                (x) => x.Where(p => p.Text.Contains("1"));
+            var resultQ = _table.Query(func);
+        }
+
+        #endregion
     }
 }

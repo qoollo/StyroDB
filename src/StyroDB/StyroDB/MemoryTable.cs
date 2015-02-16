@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq.Expressions;
 using System.Threading;
 
 namespace StyroDB.InMemrory
@@ -118,6 +119,23 @@ namespace StyroDB.InMemrory
                 throw new TimeoutException();
             }
         }
+
+        public IEnumerable<TValue> Query(Func<IEnumerable<TValue>, IEnumerable<TValue>> func, int timeout = LockTimeout)
+        {
+            CheckDisposed();
+            if (_cacheLock.TryEnterReadLock(timeout))
+            {
+                try
+                {
+                    return func(_innerCache.Values);
+                }
+                finally
+                {
+                    _cacheLock.ExitReadLock();
+                }
+            }
+            throw new TimeoutException();
+        } 
 
         protected override void Dispose(bool disposing)
         {
