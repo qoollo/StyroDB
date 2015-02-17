@@ -69,10 +69,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Qoollo.Logger">
-      <HintPath>..\packages\Qoollo.Logger.2.1.11\lib\net45\Qoollo.Logger.dll</HintPath>
+      <HintPath>..\..\..\..\src\StyroDB\packages\Qoollo.Logger.2.1.11\lib\net45\Qoollo.Logger.dll</HintPath>
     </Reference>
     <Reference Include="Qoollo.PerformanceCounters">
-      <HintPath>..\packages\Qoollo.PerformanceCounters.2.0.0\lib\net45\Qoollo.PerformanceCounters.dll</HintPath>
+      <HintPath>..\..\..\..\src\StyroDB\packages\Qoollo.PerformanceCounters.2.0.0\lib\net45\Qoollo.PerformanceCounters.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
