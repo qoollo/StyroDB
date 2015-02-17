@@ -105,7 +105,6 @@
     <Compile Include="InMemoryTests\MemoryDatabaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestData\ValueTestClass.cs" />
-    <Compile Include="TestHelpers\TestReflection.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StyroDB\StyroDB.InMemory.csproj">

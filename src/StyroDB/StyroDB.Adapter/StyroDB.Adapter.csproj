@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{94704908-1B56-4BEA-AB80-DB443ADFE4E1}</ProjectGuid>
+    <ProjectGuid>{955996C4-37F6-47CA-B525-69AAE3E50584}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>StyroDB.Adapter</RootNamespace>
