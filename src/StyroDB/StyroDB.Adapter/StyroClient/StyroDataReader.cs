@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace StyroDB.Adapter
+namespace StyroDB.Adapter.StyroClient
 {
-    class StyroDataReader: IDataReader
+    public class StyroDataReader: IDataReader
     {
         class Property
         {
@@ -31,6 +27,12 @@ namespace StyroDB.Adapter
         private IEnumerable<Property> _currentValue; 
         private IEnumerator<Object> _values;
 
+        internal StyroDataReader(IEnumerable<object> values )
+        {
+            Contract.Requires(values!=null);
+            _values = values.GetEnumerator();            
+        }
+
         private IEnumerable<Property> GetValueProperies(Object value)
         {
             var order = 0;
@@ -45,6 +47,7 @@ namespace StyroDB.Adapter
 
         public void Dispose()
         {
+            Close();
             _currentValue = null;
             _values = null;
         }

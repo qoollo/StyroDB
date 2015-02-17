@@ -77,28 +77,28 @@ namespace StyroDB.Tests.AdapterTests
         }
 
         [TestMethod]
-        public void StyroCommandRead_ExecuteReader_ReadSingleData()
+        public void StyroCommandRead_ExecuteReaderInner_ReadSingleData()
         {
             _connection.GetTable<int, int>(TableName).Write(1, 0);
 
-            var command = new StyroCommandRead<int, int>(TableName, 1) {Connection = _connection};
-            foreach (int data in command.ExecuteReader())
+            var command = new StyroCommandRead<int, int>(TableName, 1) {Connection = _connection};            
+            foreach (int data in command.ExecuteReaderInner(command.Connection, TableName))
             {
                 data.ShouldBeEqualTo(0);
             }
         }
 
         [TestMethod]
-        public void StyroCommandRead_ExecuteReader_ReadSingleDataNotExist()
+        public void StyroCommandRead_ExecuteReaderInner_ReadSingleDataNotExist()
         {
             _connection.GetTable<int, int>(TableName).Write(1, 0);
 
             var command = new StyroCommandRead<int, int>(TableName, 2) { Connection = _connection };
-            command.ExecuteReader().Count().ShouldBeEqualTo(0);
+            command.ExecuteReaderInner(command.Connection, TableName).Count().ShouldBeEqualTo(0);
         }
 
         [TestMethod]
-        public void StyroCommandQuery_ExecuteReader_ReadSliceOfData()
+        public void StyroCommandQuery_ExecuteReaderInner_ReadSliceOfData()
         {
             _connection.GetTable<int, int>(TableName).Write(1, 1);
             _connection.GetTable<int, int>(TableName).Write(2, 2);
@@ -109,11 +109,11 @@ namespace StyroDB.Tests.AdapterTests
                 Connection = _connection
             };
 
-            command.ExecuteReader().Count().ShouldBeEqualTo(2);
+            command.ExecuteReaderInner(command.Connection, TableName).Count().ShouldBeEqualTo(2);
         }
 
         [TestMethod]
-        public void StyroCommandQuery_ExecuteReader_NoData()
+        public void StyroCommandQuery_ExecuteReaderInner_NoData()
         {
             _connection.GetTable<int, int>(TableName).Write(1, 1);
             _connection.GetTable<int, int>(TableName).Write(2, 2);
@@ -124,7 +124,7 @@ namespace StyroDB.Tests.AdapterTests
                 Connection = _connection
             };
 
-            command.ExecuteReader().Count().ShouldBeEqualTo(0);
+            command.ExecuteReaderInner(command.Connection, TableName).Count().ShouldBeEqualTo(0);
         }
     }
 }

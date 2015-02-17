@@ -19,13 +19,13 @@ namespace StyroDB.Adapter.StyroClient
             ExecuteNonQueryInner(Connection, _tableName);
         }
 
-        public IEnumerable<object> ExecuteReader()
+        public StyroDataReader ExecuteReader()
         {
-            return ExecuteReaderInner(Connection, _tableName);
+            return new StyroDataReader(ExecuteReaderInner(Connection, _tableName));
         }
 
-        public abstract void ExecuteNonQueryInner(StyroConnection connection, string tableName);
+        internal abstract void ExecuteNonQueryInner(StyroConnection connection, string tableName);
 
-        public abstract IEnumerable<object> ExecuteReaderInner(StyroConnection connection, string tableName);
+        internal abstract IEnumerable<object> ExecuteReaderInner(StyroConnection connection, string tableName);
     }
 }

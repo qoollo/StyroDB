@@ -18,12 +18,12 @@ namespace StyroDB.Adapter.StyroClient.Commands
             _filter = filter;
         }
 
-        public override void ExecuteNonQueryInner(StyroConnection connection, string tableName)
+        internal override void ExecuteNonQueryInner(StyroConnection connection, string tableName)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<object> ExecuteReaderInner(StyroConnection connection, string tableName)
+        internal override IEnumerable<object> ExecuteReaderInner(StyroConnection connection, string tableName)
         {
             var table = connection.GetTable<TKey, TValue>(tableName);
             var result = table.Query(_filter);
