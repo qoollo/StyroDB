@@ -11,6 +11,8 @@
     <AssemblyName>StyroDB.Adapter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,6 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Qoollo.Logger, Version=2.1.5490.37505, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Qoollo.Logger.2.1.11\lib\net45\Qoollo.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="Qoollo.Turbo">
+      <HintPath>..\packages\Qoollo.Turbo.2.1.1\lib\net45\Qoollo.Turbo.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,14 +58,29 @@
     <Compile Include="StyroClient\StyroCommand.cs" />
     <Compile Include="StyroClient\TableHandler.cs" />
     <Compile Include="StyroClient\TableHandlerBase.cs" />
+    <Compile Include="StyroConnectionParams.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Impl\BriksDb.Impl.csproj">
+      <Project>{1A78E244-B4B2-419E-B247-8532B3AFDA87}</Project>
+      <Name>BriksDb.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StyroDB\StyroDB.InMemory.csproj">
       <Project>{a44cde0d-12d9-4bbb-b352-b7a51e070fbb}</Project>
       <Name>StyroDB.InMemory</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
