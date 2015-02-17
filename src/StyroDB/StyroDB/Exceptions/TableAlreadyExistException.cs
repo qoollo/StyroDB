@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StyroDB.InMemrory.Exceptions
 {
-    class TableAlreadyExistException : InMemoryException
+    public class TableAlreadyExistException : InMemoryException
     {
         public TableAlreadyExistException()
         {

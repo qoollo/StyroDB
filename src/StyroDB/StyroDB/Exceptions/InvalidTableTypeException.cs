@@ -2,7 +2,7 @@
 
 namespace StyroDB.InMemrory.Exceptions
 {
-    internal class InvalidTableTypeException : InMemoryException
+    public class InvalidTableTypeException : InMemoryException
     {
         public InvalidTableTypeException()
         {

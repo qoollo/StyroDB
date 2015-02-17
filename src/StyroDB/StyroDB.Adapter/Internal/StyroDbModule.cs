@@ -7,15 +7,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Qoollo.Impl.Common;
+using Qoollo.Impl.Common.NetResults;
 using Qoollo.Impl.Modules.Db.Impl;
 using Qoollo.Turbo.ObjectPools;
 using StyroDB.Adapter.StyroClient;
+using StyroDB.InMemrory;
+using StyroDB.InMemrory.Exceptions;
 
 namespace StyroDB.Adapter.Internal
 {
     internal class StyroDbModule :
         DbImplModuleWithPool<StyroConnection, StyroConnectionParams, StyroCommand, StyroDataReader>
     {
+        private StyroConnection _connection;
+
         public StyroDbModule(StyroConnectionParams connectionParam, int maxCountElementInPool, int trimPeriod)
             : base(connectionParam, maxCountElementInPool, trimPeriod)
         {
@@ -23,34 +28,33 @@ namespace StyroDB.Adapter.Internal
 
         public override RemoteResult ExecuteNonQuery(StyroCommand command)
         {
-            //RemoteResult ret = null;
-            //using (var element = RentConnection())
-            //{
-            //    command.Connection = element.Element;
-            //    try
-            //    {
-            //        command.ExecuteNonQuery();
-            //        ret = new SuccessResult();
-            //    }
-            //    catch (SqlException e)
-            //    {
-            //        Logger.Logger.Instance.Error(e, "");
-            //        ret = new FailNetResult(e.Message);
-            //    }
-            //    catch (IOException e)
-            //    {
-            //        Logger.Logger.Instance.Error(e, "");
-            //        ret = new FailNetResult(e.Message);
-            //    }
-            //    catch (InvalidOperationException e)
-            //    {
-            //        Logger.Logger.Instance.Error(e, "");
-            //        ret = new FailNetResult(e.Message);
-            //    }
-            //}
+            RemoteResult ret = null;
+            using (var element = RentConnection())
+            {
+                command.Connection = element.Element;
+                try
+                {
+                    command.ExecuteNonQuery();
+                    ret = new SuccessResult();
+                }
+                catch (ObjectDisposedException e)
+                {
+                    ret = new FailNetResult(e.Message);
+                }
+                catch (InMemoryException e)
+                {
+                    ret = new FailNetResult(e.Message);
+                }
+                
+            }
 
-            //return ret;
-            throw new NotImplementedException();
+            return ret;
+        }
+
+        public override void Start()
+        {
+            _connection = new StyroConnection(new MemoryDatabase());
+            base.Start();
         }
 
         public override DbReader<StyroDataReader> CreateReader(StyroCommand command)
@@ -60,23 +64,30 @@ namespace StyroDB.Adapter.Internal
 
         public override RentedElementMonitor<StyroConnection> RentConnectionInner()
         {
-            throw new NotImplementedException();
+            return RentConnection();
         }
 
         protected override bool CreateElement(out StyroConnection elem, StyroConnectionParams connectionParam,
             int timeout, CancellationToken token)
         {
-            throw new NotImplementedException();
+            elem = _connection;
+            return true;
         }
 
         protected override bool IsValidElement(StyroConnection elem)
         {
-            throw new NotImplementedException();
+            return elem != null;
         }
 
         protected override void DestroyElement(StyroConnection elem)
         {
-            throw new NotImplementedException();
-        }
+            try
+            {
+                _connection.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+        }        
     }
 }
