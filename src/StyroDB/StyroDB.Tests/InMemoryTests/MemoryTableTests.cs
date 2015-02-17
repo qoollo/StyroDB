@@ -6,7 +6,7 @@ using System.Threading;
 using FluentAssert;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StyroDB.InMemrory;
-using StyroDB.Tests.InMemoryTests.Helper;
+using StyroDB.Tests.Helper;
 using StyroDB.Tests.TestData;
 
 namespace StyroDB.Tests.InMemoryTests

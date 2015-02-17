@@ -18,6 +18,7 @@ namespace StyroDB.InMemrory
             _physicalTable = table;
         }
 
+        public string TableName { get { return _physicalTable.TableName; } }
         public int LockTimeout
         {
             get { return _lockTimeout; }
@@ -47,6 +48,11 @@ namespace StyroDB.InMemrory
         public void Delete(TKey key)
         {
             _physicalTable.Delete(key, _lockTimeout);
+        }
+
+        public IEnumerable<TValue> Query(Func<IEnumerable<TValue>, IEnumerable<TValue>> func)
+        {
+            return _physicalTable.Query(func, _lockTimeout);
         }
 
     }

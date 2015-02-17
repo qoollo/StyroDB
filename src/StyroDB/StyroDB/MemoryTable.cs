@@ -13,12 +13,9 @@ namespace StyroDB.InMemrory
         protected readonly ReaderWriterLockSlim _cacheLock;
         protected readonly Dictionary<TKey, TValue> _innerCache;
 
-        public MemoryTable(String tableName)
+        public MemoryTable(String tableName):base(tableName)
         {
-            Contract.Requires(!String.IsNullOrEmpty(tableName));
-            _name = tableName;
-
-            _cacheLock = new ReaderWriterLockSlim();
+           _cacheLock = new ReaderWriterLockSlim();
             _innerCache = new Dictionary<TKey, TValue>();
         }
 
@@ -139,7 +136,7 @@ namespace StyroDB.InMemrory
 
         protected override void Dispose(bool disposing)
         {
-            disposed = true;
+            base.Dispose(disposing);
             if (_cacheLock != null) _cacheLock.Dispose();
             
         }
