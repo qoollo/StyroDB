@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StyroDB.InMemrory
 {
-    public class MemoryTableInterface<TKey, TValue>
+    public class MemoryTableInterface<TKey, TValue> : IMemoryTable<TKey, TValue>
     {
         private readonly MemoryTable<TKey, TValue> _physicalTable;
         private int _lockTimeout = 5000; 

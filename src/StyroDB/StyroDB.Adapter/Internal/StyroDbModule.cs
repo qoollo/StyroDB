@@ -11,6 +11,7 @@ using Qoollo.Impl.Common.NetResults;
 using Qoollo.Impl.Modules.Db.Impl;
 using Qoollo.Turbo.ObjectPools;
 using StyroDB.Adapter.StyroClient;
+using StyroDB.Adapter.Wrappers;
 using StyroDB.InMemrory;
 using StyroDB.InMemrory.Exceptions;
 
@@ -53,13 +54,13 @@ namespace StyroDB.Adapter.Internal
 
         public override void Start()
         {
-            _connection = new StyroConnection(new MemoryDatabase());
+            _connection = new StyroConnection(new MemoryDatabaseWrapper(new MemoryDatabase()));
             base.Start();
         }
 
         public override DbReader<StyroDataReader> CreateReader(StyroCommand command)
         {
-            throw new NotImplementedException();
+            return new StyroReader(command, RentConnection());
         }
 
         public override RentedElementMonitor<StyroConnection> RentConnectionInner()

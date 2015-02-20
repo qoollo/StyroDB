@@ -17,12 +17,12 @@ namespace StyroDB.Tests.Helper
             _database = database;
         }
 
-        public  MemoryTableInterface<TKey, TValue> CreateTable<TKey, TValue>(String name)
+        public IMemoryTable<TKey, TValue> CreateTable<TKey, TValue>(String name)
         {            
             return _database.CreateTable<TKey, TValue>(name);
         }
 
-        public MemoryTableInterface<TKey, TValue> GetTable<TKey, TValue>(string name)
+        public IMemoryTable<TKey, TValue> GetTable<TKey, TValue>(string name)
         {
             GetCount++;
             return _database.GetTable<TKey, TValue>(name);

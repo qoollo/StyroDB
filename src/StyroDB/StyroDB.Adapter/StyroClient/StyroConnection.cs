@@ -18,17 +18,17 @@ namespace StyroDB.Adapter.StyroClient
             _connection = connection;
             _tables = new List<TableHandlerBase>();
             _lock = new ReaderWriterLockSlim();
-        }       
+        }
 
-        public MemoryTableInterface<TKey, TValue> GetTable<TKey, TValue>(string tableName)
+        public IMemoryTable<TKey, TValue> GetTable<TKey, TValue>(string tableName)
         {
             return ReadTableFromLocal<TKey, TValue>(tableName) 
                 ?? CreateOrReadTable<TKey, TValue>(tableName);
         }
 
-        private MemoryTableInterface<TKey, TValue> ReadTableFromLocal<TKey, TValue>(string tableName)
+        private IMemoryTable<TKey, TValue> ReadTableFromLocal<TKey, TValue>(string tableName)
         {
-            MemoryTableInterface<TKey, TValue> ret = null;
+            IMemoryTable<TKey, TValue> ret = null;
 
             _lock.EnterReadLock();
             try
@@ -42,9 +42,9 @@ namespace StyroDB.Adapter.StyroClient
             return ret;
         }
 
-        private MemoryTableInterface<TKey, TValue> ReadTableFromLocalNoLock<TKey, TValue>(string tableName)
+        private IMemoryTable<TKey, TValue> ReadTableFromLocalNoLock<TKey, TValue>(string tableName)
         {
-            MemoryTableInterface<TKey, TValue> ret = null;
+            IMemoryTable<TKey, TValue> ret = null;
             foreach (var table in _tables)
             {
                 if (string.Equals(table.TableName, tableName))
@@ -56,9 +56,9 @@ namespace StyroDB.Adapter.StyroClient
             return ret;
         }
 
-        private MemoryTableInterface<TKey, TValue> CreateOrReadTable<TKey, TValue>(string tableName)
+        private IMemoryTable<TKey, TValue> CreateOrReadTable<TKey, TValue>(string tableName)
         {
-            MemoryTableInterface<TKey, TValue> ret = null;
+            IMemoryTable<TKey, TValue> ret = null;
 
             _lock.EnterWriteLock();
             try

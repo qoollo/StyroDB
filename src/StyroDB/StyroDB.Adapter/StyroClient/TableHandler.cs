@@ -10,15 +10,15 @@ namespace StyroDB.Adapter.StyroClient
 {
     internal class TableHandler<TKey, TValue>:TableHandlerBase
     {
-        private readonly MemoryTableInterface<TKey, TValue> _table;
+        private readonly IMemoryTable<TKey, TValue> _table;
 
-        public TableHandler(MemoryTableInterface<TKey, TValue> table)
+        public TableHandler(IMemoryTable<TKey, TValue> table)
         {
             Contract.Requires(table!=null);
             _table = table;
         }
 
-        public MemoryTableInterface<TKey, TValue> Table { get { return _table; } }
+        public IMemoryTable<TKey, TValue> Table { get { return _table; } }
         public override string TableName
         {
             get { return _table.TableName; }

@@ -44,8 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Internal\MetaData.cs" />
+    <Compile Include="Internal\StyroCommandNonQueryWithId.cs" />
     <Compile Include="Internal\StyroDbModule.cs" />
-    <Compile Include="Internal\StyroDbReader.cs" />
+    <Compile Include="Internal\StyroReader.cs" />
+    <Compile Include="Internal\StyroMetaDataCommandCreator.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandNonQuery.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandQuery.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandRead.cs" />
@@ -56,6 +59,9 @@
     <Compile Include="StyroClient\TableHandler.cs" />
     <Compile Include="StyroClient\TableHandlerBase.cs" />
     <Compile Include="StyroConnectionParams.cs" />
+    <Compile Include="Wrappers\MemoryDatabaseWrapper.cs" />
+    <Compile Include="Wrappers\MemoryTableWrapper.cs" />
+    <Compile Include="Wrappers\ValueWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Impl\BriksDb.Impl.csproj">

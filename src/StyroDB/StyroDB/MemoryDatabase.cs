@@ -19,7 +19,7 @@ namespace StyroDB.InMemrory
             _disposed = false;
         }
 
-        public MemoryTableInterface<TKey, TValue> CreateTable<TKey, TValue>(String name)
+        public IMemoryTable<TKey, TValue> CreateTable<TKey, TValue>(String name)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
 
@@ -34,7 +34,7 @@ namespace StyroDB.InMemrory
             return new MemoryTableInterface<TKey, TValue>(newTable);
         }
 
-        public MemoryTableInterface<TKey, TValue> GetTable<TKey, TValue>(String name)
+        public IMemoryTable<TKey, TValue> GetTable<TKey, TValue>(String name)
         {
             Contract.Requires(!String.IsNullOrEmpty(name));
 
