@@ -102,6 +102,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AdapterTests\ConnectionTests.cs" />
+    <Compile Include="AdapterTests\WarpperTest.cs" />
     <Compile Include="Helper\InMemorySuccessors.cs" />
     <Compile Include="Helper\TestMemoryDatabase.cs" />
     <Compile Include="InMemoryTests\MemoryTableTests.cs" />
@@ -111,6 +112,10 @@
     <Compile Include="TestData\ValueTestClass.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Impl\BriksDb.Impl.csproj">
+      <Project>{1A78E244-B4B2-419E-B247-8532B3AFDA87}</Project>
+      <Name>BriksDb.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StyroDB.Adapter\StyroDB.Adapter.csproj">
       <Project>{955996C4-37F6-47CA-B525-69AAE3E50584}</Project>
       <Name>StyroDB.Adapter</Name>

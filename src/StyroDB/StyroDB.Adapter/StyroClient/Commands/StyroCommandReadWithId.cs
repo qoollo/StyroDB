@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace StyroDB.Adapter.StyroClient.Commands
 {
-    internal class StyroCommandReadWithoutId<TKey, TValue>:StyroCommand
+    internal class StyroCommandReadWithId<TKey, TValue>:StyroCommand,IStyroCommandSetId< TKey>
     {
         private TKey _key;
 
-        public StyroCommandReadWithoutId(string tableName)
+        public StyroCommandReadWithId(string tableName)
             : base(tableName)
         {            
         }
 
-        public void SetId(TKey key)
+        public void SetKey(TKey key)
         {
             _key = key;
         }

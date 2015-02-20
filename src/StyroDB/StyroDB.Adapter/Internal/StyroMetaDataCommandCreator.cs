@@ -89,7 +89,7 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand ReadMetaData(StyroCommand userRead)
         {
-            return new StyroCommandReadWithoutId<TKey, TValue>(_tableName);
+            return new StyroCommandReadWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName);
         }
 
         public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroReader> reader, bool readuserId = true)
@@ -138,8 +138,9 @@ namespace StyroDB.Adapter.Internal
         }
 
         public StyroCommand SetKeytoCommand(StyroCommand command, object key)
-        {
-            throw new NotImplementedException();
+        {          
+            ((IStyroCommandSetId< TKey>)command).SetKey((TKey)key);
+            return command;
         }
 
         public FieldDescription GetKeyDescription()

@@ -5,7 +5,7 @@ using StyroDB.InMemrory;
 
 namespace StyroDB.Adapter.StyroClient.Commands
 {
-    internal class StyroCommandNonQueryWithId<TKey, TValue>:StyroCommand
+    internal class StyroCommandNonQueryWithId<TKey, TValue>:StyroCommand, IStyroCommandSetId< TKey>
     {
         private TKey _key;
         private readonly Action<TKey, IMemoryTable<TKey, TValue>> _action;

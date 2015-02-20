@@ -11,5 +11,7 @@ namespace StyroDB.Adapter.StyroClient
     internal abstract class TableHandlerBase
     {
         public abstract string TableName { get; }
+
+        public abstract bool IaValid(Type value);
     }
 }

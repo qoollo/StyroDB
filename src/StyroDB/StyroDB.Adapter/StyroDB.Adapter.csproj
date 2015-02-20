@@ -45,20 +45,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal\MetaData.cs" />
-    <Compile Include="Internal\StyroCommandNonQueryWithId.cs" />
+    <Compile Include="StyroClient\Commands\IStyroCommandSetId.cs" />
+    <Compile Include="StyroClient\Commands\StyroCommandDatabaseAction.cs" />
+    <Compile Include="StyroClient\Commands\StyroCommandNonQueryWithId.cs" />
     <Compile Include="Internal\StyroDbModule.cs" />
     <Compile Include="Internal\StyroReader.cs" />
     <Compile Include="Internal\StyroMetaDataCommandCreator.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandNonQuery.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandQuery.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandRead.cs" />
+    <Compile Include="StyroClient\Commands\StyroCommandReadWithId.cs" />
     <Compile Include="StyroClient\StyroConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StyroClient\StyroDataReader.cs" />
     <Compile Include="StyroClient\StyroCommand.cs" />
     <Compile Include="StyroClient\TableHandler.cs" />
     <Compile Include="StyroClient\TableHandlerBase.cs" />
-    <Compile Include="StyroConnectionParams.cs" />
+    <Compile Include="Internal\StyroConnectionParams.cs" />
     <Compile Include="Wrappers\MemoryDatabaseWrapper.cs" />
     <Compile Include="Wrappers\MemoryTableWrapper.cs" />
     <Compile Include="Wrappers\ValueWrapper.cs" />

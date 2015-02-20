@@ -46,6 +46,9 @@ namespace StyroDB.InMemrory
             
             try
             {
+                var table = _tables[name];
+                var table2 = table as MemoryTable<TKey, TValue>;
+
                 var memTable = new MemoryTableInterface<TKey, TValue>((MemoryTable<TKey, TValue>)_tables[name]);
                 return memTable;
             }

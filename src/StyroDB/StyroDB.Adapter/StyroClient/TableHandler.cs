@@ -23,5 +23,10 @@ namespace StyroDB.Adapter.StyroClient
         {
             get { return _table.TableName; }
         }
+
+        public override bool IaValid(Type value)
+        {
+            return typeof (TValue) == value;
+        }
     }
 }

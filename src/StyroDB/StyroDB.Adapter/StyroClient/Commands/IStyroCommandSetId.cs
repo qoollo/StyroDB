@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StyroDB.Adapter
+namespace StyroDB.Adapter.StyroClient.Commands
 {
-    internal class StyroConnectionParams
+    interface IStyroCommandSetId<in TKey>
     {
+        void SetKey(TKey key);
     }
 }

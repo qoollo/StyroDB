@@ -20,6 +20,13 @@ namespace StyroDB.Adapter.StyroClient
             _lock = new ReaderWriterLockSlim();
         }
 
+        internal List<TableHandlerBase> Tables{get { return _tables; }}
+
+        public void CreateTable<TKey, TValue>(string tableName)
+        {
+            _connection.CreateTable<TKey, TValue>(tableName);
+        }
+
         public IMemoryTable<TKey, TValue> GetTable<TKey, TValue>(string tableName)
         {
             return ReadTableFromLocal<TKey, TValue>(tableName) 
@@ -47,7 +54,7 @@ namespace StyroDB.Adapter.StyroClient
             IMemoryTable<TKey, TValue> ret = null;
             foreach (var table in _tables)
             {
-                if (string.Equals(table.TableName, tableName))
+                if (string.Equals(table.TableName, tableName) && table.IaValid(typeof(TValue)))
                 {
                     ret = ((TableHandler<TKey, TValue>) table).Table;
                     break;

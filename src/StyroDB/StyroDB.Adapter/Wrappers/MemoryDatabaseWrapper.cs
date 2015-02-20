@@ -33,7 +33,20 @@ namespace StyroDB.Adapter.Wrappers
 
         public IMemoryTable<TKey, TValue> GetTable<TKey, TValue>(string name)
         {
+            if(IsValueGeneric<TValue>())
+                return _memoryDatabase.GetTable<TKey, TValue>(name);
+
             return new MemoryTableWrapper<TKey, TValue>(_memoryDatabase.GetTable<TKey, ValueWrapper<TKey, TValue>>(name));
+        }
+
+        private bool IsValueGeneric<TValue>()
+        {
+            var type = typeof (ValueWrapper<,>);
+            var genericType = typeof (TValue);
+
+            if (genericType.IsValueType) return false;
+
+            return type == genericType.GetGenericTypeDefinition();
         }
 
         public void DeleteTable(string name)
