@@ -55,6 +55,7 @@
     <Compile Include="StyroClient\Commands\StyroCommandQuery.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandRead.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandReadWithId.cs" />
+    <Compile Include="StyroClient\Commands\StyroCommandReadWithoutId.cs" />
     <Compile Include="StyroClient\StyroConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StyroClient\StyroDataReader.cs" />

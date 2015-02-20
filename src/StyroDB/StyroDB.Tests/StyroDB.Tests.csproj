@@ -103,6 +103,9 @@
   <ItemGroup>
     <Compile Include="AdapterTests\ConnectionTests.cs" />
     <Compile Include="AdapterTests\WarpperTest.cs" />
+    <Compile Include="AdapterTests\DataReaderTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Helper\InMemorySuccessors.cs" />
     <Compile Include="Helper\TestMemoryDatabase.cs" />
     <Compile Include="InMemoryTests\MemoryTableTests.cs" />

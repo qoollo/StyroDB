@@ -37,11 +37,22 @@ namespace StyroDB.Adapter.StyroClient
         {
             var order = 0;
             var propList = new List<Property>();
-            foreach (var prop in value.GetType().GetProperties())
+            var valueType = value.GetType();
+            var properties = valueType.GetProperties();
+
+            if (properties.Length == 0)
             {
-                propList.Add(new Property(prop.Name, order, prop.PropertyType, prop.GetConstantValue()));
-                order++;
+                propList.Add(new Property(valueType.FullName, order, valueType, value));
             }
+            else
+            {
+                foreach (var prop in properties)
+                {
+                    propList.Add(new Property(prop.Name, order, prop.PropertyType, prop.GetValue(value, null)));
+                    order++;
+                }
+            }
+            
             return propList;    
         }
 
