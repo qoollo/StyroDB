@@ -102,6 +102,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AdapterTests\ConnectionTests.cs" />
+    <Compile Include="AdapterTests\ConverterTests.cs" />
     <Compile Include="AdapterTests\WarpperTest.cs" />
     <Compile Include="AdapterTests\DataReaderTests.cs">
       <SubType>Code</SubType>
