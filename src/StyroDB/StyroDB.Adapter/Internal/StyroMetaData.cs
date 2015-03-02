@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace StyroDB.Adapter.Internal
 {
-    internal class MetaData<TKey>
+    internal class StyroMetaData<TKey>
     {
         public TKey Key { get; set; }
         public bool IsLocal { get; set; }
         public bool IsDelete { get; set; }
         public DateTime DeleteTime { get; set; }
 
-        public MetaData(TKey key)
+        public StyroMetaData(TKey key)
         {
             Key = key;            
         }

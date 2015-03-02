@@ -68,14 +68,14 @@ namespace StyroDB.Tests.AdapterTests
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsLocal.ShouldBeFalse()))
+                table => table.Read(1).StyroMetaData.IsLocal.ShouldBeFalse()))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(_meta.SetKeytoCommand(_meta.CreateMetaData(true), 1))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsLocal.ShouldBeTrue()))
+                table => table.Read(1).StyroMetaData.IsLocal.ShouldBeTrue()))
                 .IsError.ShouldBeFalse();
         }
 
@@ -107,14 +107,14 @@ namespace StyroDB.Tests.AdapterTests
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsDelete.ShouldBeFalse()))
+                table => table.Read(1).StyroMetaData.IsDelete.ShouldBeFalse()))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(_meta.SetKeytoCommand(_meta.SetDataDeleted(), 1))
                 .IsError.ShouldBeFalse();
            
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsDelete.ShouldBeTrue()))
+                table => table.Read(1).StyroMetaData.IsDelete.ShouldBeTrue()))
                 .IsError.ShouldBeFalse();
         }
 
@@ -128,21 +128,21 @@ namespace StyroDB.Tests.AdapterTests
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsDelete.ShouldBeFalse()))
+                table => table.Read(1).StyroMetaData.IsDelete.ShouldBeFalse()))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(_meta.SetKeytoCommand(_meta.SetDataDeleted(), 1))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsDelete.ShouldBeTrue()))
+                table => table.Read(1).StyroMetaData.IsDelete.ShouldBeTrue()))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(_meta.SetKeytoCommand(_meta.SetDataNotDeleted(), 1))
                 .IsError.ShouldBeFalse();
 
             _impl.ExecuteNonQuery(new StyroCommandNonQuery<int, ValueWrapper<int, int>>(TableName,
-                table => table.Read(1).MetaData.IsDelete.ShouldBeFalse()))
+                table => table.Read(1).StyroMetaData.IsDelete.ShouldBeFalse()))
                 .IsError.ShouldBeFalse();
         }
 
@@ -155,12 +155,9 @@ namespace StyroDB.Tests.AdapterTests
             _impl.ExecuteNonQuery(_meta.SetKeytoCommand(_meta.CreateMetaData(false), 1))
                 .IsError.ShouldBeFalse();
 
-            var reader = _impl.CreateReader(
+            _impl.CreateReader(
                 _meta.SetKeytoCommand(
-                    _meta.ReadMetaData(new StyroCommandReadWithId<int, int>(TableName)), 1)).ShouldNotBeNull();
-
-            //TODO check reader
-
+                    _meta.ReadMetaData(new StyroCommandReadWithId<int, int>(TableName)), 1)).ShouldNotBeNull();            
         }
     }
 }

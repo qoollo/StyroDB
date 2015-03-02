@@ -42,7 +42,7 @@ namespace StyroDB.Adapter.Internal
                 (key, table) =>
                 {
                     var value = table.Read(key);
-                    value.MetaData.IsLocal = remote;
+                    value.StyroMetaData.IsLocal = remote;
                     table.Write(key, value);
                 });
         }
@@ -59,7 +59,7 @@ namespace StyroDB.Adapter.Internal
                 (key, table) =>
                 {
                     var value = table.Read(key);
-                    value.MetaData.IsLocal = local;
+                    value.StyroMetaData.IsLocal = local;
                     table.Write(key, value);
                 });
         }
@@ -70,8 +70,8 @@ namespace StyroDB.Adapter.Internal
                 (key, table) =>
                 {
                     var value = table.Read(key);
-                    value.MetaData.IsDelete = true;
-                    value.MetaData.DeleteTime = DateTime.Now;
+                    value.StyroMetaData.IsDelete = true;
+                    value.StyroMetaData.DeleteTime = DateTime.Now;
                     table.Write(key, value);
                 });
         }
@@ -82,7 +82,7 @@ namespace StyroDB.Adapter.Internal
                 (key, table) =>
                 {
                     var value = table.Read(key);
-                    value.MetaData.IsDelete = false;
+                    value.StyroMetaData.IsDelete = false;
                     table.Write(key, value);
                 });
         }
@@ -94,7 +94,13 @@ namespace StyroDB.Adapter.Internal
 
         public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroReader> reader, bool readuserId = true)
         {
-            throw new NotImplementedException();
+            var styroMeta = (StyroMetaData<TKey>) reader.GetValue(0);
+            var meta = new MetaData(styroMeta.IsLocal, styroMeta.DeleteTime, styroMeta.IsDelete);
+
+            if (readuserId)
+                meta.Id = styroMeta.Key;
+
+            return new Tuple<MetaData, bool>(meta, readuserId);
         }
 
         public MetaData ReadMetaFromSearchData(SearchData data)

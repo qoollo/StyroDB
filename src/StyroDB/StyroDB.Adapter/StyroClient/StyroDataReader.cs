@@ -7,23 +7,7 @@ using System.Linq;
 namespace StyroDB.Adapter.StyroClient
 {
     public class StyroDataReader: IDataReader
-    {
-        class Property
-        {
-            public Property(string name, int ordinal, Type type, Object value)
-            {
-                Name = name;
-                Ordinal = ordinal;
-                TypeValue = type;
-                Value = value;
-            }
-
-            public readonly string Name;
-            public readonly int Ordinal;
-            public readonly Type TypeValue;
-            public readonly Object Value;
-        }
-
+    {        
         private IEnumerable<Property> _currentValue; 
         private IEnumerator<Object> _values;
 
@@ -33,7 +17,7 @@ namespace StyroDB.Adapter.StyroClient
             _values = values.GetEnumerator();            
         }
 
-        private IEnumerable<Property> GetValueProperies(Object value)
+        internal virtual IEnumerable<Property> GetValueProperies(Object value)
         {
             var order = 0;
             var propList = new List<Property>();

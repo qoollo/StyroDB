@@ -7,10 +7,10 @@ namespace StyroDB.Adapter.Wrappers
         public ValueWrapper(TKey key, TValue value)
         {
             Value = value;
-            MetaData = new MetaData<TKey>(key);
+            StyroMetaData = new StyroMetaData<TKey>(key);
         }
 
         public TValue Value { get; private set; }
-        public MetaData<TKey> MetaData { get; private set; } 
+        public StyroMetaData<TKey> StyroMetaData { get; private set; } 
     }
 }
