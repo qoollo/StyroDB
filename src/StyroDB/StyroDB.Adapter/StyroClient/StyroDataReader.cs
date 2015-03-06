@@ -10,21 +10,17 @@ namespace StyroDB.Adapter.StyroClient
     {
         class Property
         {
-            public Property(string name, int ordinal, Type type, Object value)
+            public Property(string name, Object value)
             {
                 Name = name;
-                Ordinal = ordinal;
-                TypeValue = type;
                 Value = value;
             }
 
             public readonly string Name;
-            public readonly int Ordinal;
-            public readonly Type TypeValue;
             public readonly Object Value;
         }
 
-        private IEnumerable<Property> _currentValue; 
+        private List<Property> _currentValue; 
         private IEnumerator<Object> _values;
 
         internal StyroDataReader(IEnumerable<object> values )
@@ -33,23 +29,21 @@ namespace StyroDB.Adapter.StyroClient
             _values = values.GetEnumerator();            
         }
 
-        private IEnumerable<Property> GetValueProperies(Object value)
+        private List<Property> GetValueProperies(Object value)
         {
-            var order = 0;
             var propList = new List<Property>();
             var valueType = value.GetType();
             var properties = valueType.GetProperties();
 
             if (properties.Length == 0)
             {
-                propList.Add(new Property(valueType.FullName, order, valueType, value));
+                propList.Add(new Property(valueType.FullName, value));
             }
             else
             {
                 foreach (var prop in properties)
                 {
-                    propList.Add(new Property(prop.Name, order, prop.PropertyType, prop.GetValue(value, null)));
-                    order++;
+                    propList.Add(new Property(prop.Name, prop.GetValue(value, null)));
                 }
             }
             
@@ -67,11 +61,15 @@ namespace StyroDB.Adapter.StyroClient
         {
             if (_currentValue != null)
             {
-                var prop = _currentValue.FirstOrDefault(val => val.Ordinal == i);
-                if (prop != null)
+                try
                 {
-                    return prop.Name;
+                    return _currentValue[i].Name;
                 }
+                catch (Exception)
+                {
+                    return null;
+                }
+                
             }
             return null;
         }
@@ -80,10 +78,13 @@ namespace StyroDB.Adapter.StyroClient
         {
             if (_currentValue != null)
             {
-                var prop = _currentValue.FirstOrDefault(val => val.Ordinal == i);
-                if (prop != null)
+                try
                 {
-                    return prop.TypeValue;
+                    return _currentValue[i].Value.GetType();
+                }
+                catch (Exception)
+                {
+                    return null;
                 }
             }
             return null;
@@ -93,10 +94,13 @@ namespace StyroDB.Adapter.StyroClient
         {
             if (_currentValue != null)
             {
-                var prop = _currentValue.FirstOrDefault(val => val.Ordinal == i);
-                if (prop != null)
+                try
                 {
-                    return prop.Value;
+                    return _currentValue[i].Value;
+                }
+                catch (Exception)
+                {
+                    return null;
                 }
             }
             return null;
@@ -104,13 +108,10 @@ namespace StyroDB.Adapter.StyroClient
 
         public object GetValue(string name)
         {
-            if (_currentValue != null)
+            var propIndex = GetOrdinal(name);
+            if (propIndex != -1)
             {
-                var prop = _currentValue.FirstOrDefault(val => val.Name == name);
-                if (prop != null)
-                {
-                    return prop.Value;
-                }
+                return _currentValue[propIndex];
             }
             return null;
         }
@@ -122,7 +123,7 @@ namespace StyroDB.Adapter.StyroClient
                 var prop = _currentValue.FirstOrDefault(val => val.Name == name);
                 if (prop != null)
                 {
-                    return prop.Ordinal;
+                    return _currentValue.IndexOf(prop);
                 }
             }
             return -1;

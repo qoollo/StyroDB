@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Text.RegularExpressions;
 using System.Threading;
+using StyroDB.Adapter.Converter.Exceptions;
 
 namespace StyroDB.Adapter.Converter
 {
@@ -57,6 +58,10 @@ namespace StyroDB.Adapter.Converter
                 {"Take", x => func(x).Take(Convert.ToInt32(argument))},
                 {"Skip", x => func(x).Skip(Convert.ToInt32(argument))}
             };
+            if (!funcs.ContainsKey(method))
+            {
+                throw new StyroQueryException(String.Format("Invalid query token: {0}",method));
+            }
             return funcs[method];
         }
     }

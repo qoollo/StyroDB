@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StyroDB.InMemrory.Exceptions
 {
-    public class InMemoryException: Exception
+    public class InMemoryException : StyroDbException
     {
         public InMemoryException()
         {

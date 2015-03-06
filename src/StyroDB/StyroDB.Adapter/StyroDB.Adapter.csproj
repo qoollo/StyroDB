@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter\Exceptions\StyroQueryException.cs" />
     <Compile Include="Converter\QueryConverter.cs" />
     <Compile Include="Internal\MetaData.cs" />
     <Compile Include="StyroClient\Commands\IStyroCommandSetId.cs" />

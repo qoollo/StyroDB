@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\InMemoryException.cs" />
     <Compile Include="Exceptions\InvalidTableTypeException.cs" />
+    <Compile Include="Exceptions\StyroDbException.cs" />
     <Compile Include="Exceptions\TableAlreadyExistException.cs" />
     <Compile Include="BasicTable.cs" />
     <Compile Include="IMemoryDatabase.cs" />
