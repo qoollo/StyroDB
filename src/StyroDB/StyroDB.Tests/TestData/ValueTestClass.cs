@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StyroDB.Tests.TestData
 {
-    class ValueTestClass
+    public class ValueTestClass
     {
         public ValueTestClass()
         {
@@ -34,7 +34,7 @@ namespace StyroDB.Tests.TestData
         public NestedClass Inner { get; set; }
     }
 
-    class NestedClass
+    public class NestedClass
     {
         public NestedClass(double science)
         {
