@@ -38,7 +38,6 @@ namespace StyroDB.Adapter.Internal
 
         protected override void ReadNextInner()
         {
-            
         }
 
         protected override object GetValueInner(int index)

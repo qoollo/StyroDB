@@ -15,7 +15,7 @@ namespace StyroDB.InMemrory
 
         public MemoryTable(String tableName):base(tableName)
         {
-           _cacheLock = new ReaderWriterLockSlim();
+           _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
             _innerCache = new Dictionary<TKey, TValue>();
         }
 

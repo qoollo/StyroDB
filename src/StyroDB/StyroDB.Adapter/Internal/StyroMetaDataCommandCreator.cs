@@ -33,12 +33,14 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand InitMetaDataDb(string idInit)
         {
-            return new StyroCommandNonQuery<TKey, ValueWrapper<TKey, TValue>>(_tableName, tableName => { });
+            return
+                new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
+                    (IMemoryTable<TKey, ValueWrapper<TKey, TValue>> tableName) => { });
         }
 
         public StyroCommand CreateMetaData(bool remote)
         {
-            return new StyroCommandNonQueryWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName,
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
                 (key, table) =>
                 {
                     var value = table.Read(key);
@@ -49,13 +51,13 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand DeleteMetaData()
         {
-            return new StyroCommandNonQueryWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName,
-                (key, table) => table.Delete(key));
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
+                (key, table) => table.Delete(key));            
         }
 
         public StyroCommand UpdateMetaData(bool local)
         {
-            return new StyroCommandNonQueryWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName,
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
                 (key, table) =>
                 {
                     var value = table.Read(key);
@@ -66,7 +68,7 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand SetDataDeleted()
         {
-            return new StyroCommandNonQueryWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName,
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
                 (key, table) =>
                 {
                     var value = table.Read(key);
@@ -78,7 +80,7 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand SetDataNotDeleted()
         {
-            return new StyroCommandNonQueryWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName,
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
                 (key, table) =>
                 {
                     var value = table.Read(key);
@@ -89,7 +91,7 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand ReadMetaData(StyroCommand userRead)
         {
-            return new StyroCommandReadWithId<TKey, ValueWrapper<TKey, TValue>>(_tableName);
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ReadCommand();            
         }
 
         public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroReader> reader, bool readuserId = true)
@@ -103,26 +105,55 @@ namespace StyroDB.Adapter.Internal
             return new Tuple<MetaData, bool>(meta, readuserId);
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public MetaData ReadMetaFromSearchData(SearchData data)
         {
+            
             throw new NotImplementedException();
         }
 
         public string ReadWithDeleteAndLocal(bool isDelete, bool local)
         {
-            throw new NotImplementedException();
+            return string.Format("ReadWithDeleteAndLocal:{0}:{1}", isDelete, local);
         }
 
         public StyroCommand ReadWithDelete(StyroCommand userRead, bool isDelete)
         {
-            throw new NotImplementedException();
+            return userRead;
         }
 
         public StyroCommand ReadWithDeleteAndLocal(StyroCommand userRead, bool isDelete, bool local)
         {
-            throw new NotImplementedException();
+            var builder = new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName);
+            var command =  builder
+                .ExecuteReader(wrappers =>
+                {
+                    userRead.Connection = builder.Connection;
+
+                    var collection = userRead.ExecuteReaderGetCollection().Cast<ValueWrapper<TKey, TValue>>();
+                    collection = collection.Where(x =>
+                    {
+                        var ret = x.StyroMetaData.IsDelete == isDelete;
+                        if (local)
+                            ret = ret && x.StyroMetaData.IsLocal;
+                        return ret;
+                    });
+                    return collection;
+                });
+            return command;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="idDescription"></param>
+        /// <param name="userParameters"></param>
+        /// <returns></returns>
         public StyroCommand CreateSelectCommand(string script, FieldDescription idDescription, List<FieldDescription> userParameters)
         {
             throw new NotImplementedException();

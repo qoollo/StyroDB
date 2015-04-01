@@ -102,7 +102,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AdapterTests\ConnectionTests.cs" />
-    <Compile Include="AdapterTests\WarpperTest.cs" />
+    <Compile Include="AdapterTests\WrapperTest.cs" />
     <Compile Include="AdapterTests\DataReaderTests.cs">
       <SubType>Code</SubType>
     </Compile>

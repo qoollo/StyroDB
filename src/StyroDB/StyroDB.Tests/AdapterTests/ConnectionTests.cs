@@ -48,10 +48,10 @@ namespace StyroDB.Tests.AdapterTests
         [TestMethod]
         public void StyroCommandNonQuery_ExecuteNonQuery_WriteData()
         {
-            var command = new StyroCommandNonQuery<int, int>(TableName, table => table.Write(1, 1))
-            {
-                Connection = _connection
-            };
+            var command = new StyroCommandBuilder<int, int>(TableName)
+                .ExecuteNonQuery(table => table.Write(1, 1));
+            command.Connection = _connection;
+            
 
             command.ExecuteNonQuery();
             _db.GetTable<int, int>(TableName).Read(1).ShouldBeEqualTo(1);
@@ -62,11 +62,11 @@ namespace StyroDB.Tests.AdapterTests
         {
             _connection.GetTable<int, int>(TableName).Write(1, 0);
 
-            var command = new StyroCommandNonQuery<int, int>(TableName, 
-                table => table.Write(1, table.Read(1) + 1))
-            {
-                Connection = _connection
-            };
+            var command = new StyroCommandBuilder<int, int>(TableName)
+                .ExecuteNonQuery(table => table.Write(1, table.Read(1) + 1));
+
+            command.Connection = _connection;
+
 
             command.ExecuteNonQuery();
             _db.GetTable<int, int>(TableName).Read(1).ShouldBeEqualTo(1);
@@ -81,7 +81,9 @@ namespace StyroDB.Tests.AdapterTests
         {
             _connection.GetTable<int, int>(TableName).Write(1, 0);
 
-            var command = new StyroCommandRead<int, int>(TableName, 1) {Connection = _connection};            
+            var command = new StyroCommandBuilder<int, int>(TableName)
+                .ReadCommand(1);
+            command.Connection = _connection;
             foreach (int data in command.ExecuteReaderInner(command.Connection, TableName))
             {
                 data.ShouldBeEqualTo(0);
@@ -93,7 +95,9 @@ namespace StyroDB.Tests.AdapterTests
         {
             _connection.GetTable<int, int>(TableName).Write(1, 0);
 
-            var command = new StyroCommandRead<int, int>(TableName, 2) { Connection = _connection };
+            var command = new StyroCommandBuilder<int, int>(TableName)
+                .ReadCommand(2);
+            command.Connection = _connection;
             command.ExecuteReaderInner(command.Connection, TableName).Count().ShouldBeEqualTo(0);
         }
 
@@ -104,10 +108,9 @@ namespace StyroDB.Tests.AdapterTests
             _connection.GetTable<int, int>(TableName).Write(2, 2);
             _connection.GetTable<int, int>(TableName).Write(3, 3);
 
-            var command = new StyroCommandQuery<int, int>(TableName, table => table.Where(x => x > 1))
-            {
-                Connection = _connection
-            };
+            var command = new StyroCommandBuilder<int, int>(TableName)
+                .ExecuteReader(table => table.Where(x => x > 1));
+            command.Connection = _connection;
 
             command.ExecuteReaderInner(command.Connection, TableName).Count().ShouldBeEqualTo(2);
         }
@@ -119,10 +122,9 @@ namespace StyroDB.Tests.AdapterTests
             _connection.GetTable<int, int>(TableName).Write(2, 2);
             _connection.GetTable<int, int>(TableName).Write(3, 3);
 
-            var command = new StyroCommandQuery<int, int>(TableName, table => table.Where(x => x < 1))
-            {
-                Connection = _connection
-            };
+            var command = new StyroCommandBuilder<int, int>(TableName)
+                .ExecuteReader(table => table.Where(x => x < 1));
+            command.Connection = _connection;
 
             command.ExecuteReaderInner(command.Connection, TableName).Count().ShouldBeEqualTo(0);
         }
