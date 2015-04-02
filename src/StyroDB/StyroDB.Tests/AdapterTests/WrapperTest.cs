@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using FluentAssert;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using StyroDB.Adapter.Converter;
 using StyroDB.Adapter.Internal;
-using StyroDB.Adapter.StyroClient;
 using StyroDB.Adapter.StyroClient.Commands;
 using StyroDB.Adapter.Wrappers;
 
@@ -208,6 +204,14 @@ namespace StyroDB.Tests.AdapterTests
             reader.Start();
 
             reader.IsCanRead.ShouldBeFalse();
+        }
+
+        [TestMethod]
+        public void StyroMetaDataCommandCreator_ReadWithDeleteAndLocal_WithoutReadCommand()
+        {
+            var jsonQuery = "{Where:StyroMetaData.IsDelete == true}";
+
+            var func = QueryConverter.GetQueryFunc<ValueWrapper<int, int>>((jsonQuery));
         }
     }
 }

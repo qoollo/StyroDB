@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Qoollo.Impl.Collector.Parser;
 using Qoollo.Impl.Common.Data.DataTypes;
 using Qoollo.Impl.Modules.Db.Impl;
@@ -118,12 +116,26 @@ namespace StyroDB.Adapter.Internal
 
         public string ReadWithDeleteAndLocal(bool isDelete, bool local)
         {
-            return string.Format("ReadWithDeleteAndLocal:{0}:{1}", isDelete, local);
+            if (local)
+                return string.Format(@"{{Where:StyroMetaData.IsDelete == {0}}}", isDelete);
+
+            return string.Format(@"{{Where:StyroMetaData.IsDelete == {0} and StyroMetaData.IsLocal == {1} }}",
+                isDelete, false);
         }
 
         public StyroCommand ReadWithDelete(StyroCommand userRead, bool isDelete)
         {
-            return userRead;
+            var builder = new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName);
+            var command = builder
+                .ExecuteReader(wrappers =>
+                {
+                    userRead.Connection = builder.Connection;
+
+                    var collection = userRead.ExecuteReaderGetCollection().Cast<ValueWrapper<TKey, TValue>>();
+                    collection = collection.Where(x => x.StyroMetaData.IsDelete == isDelete);
+                    return collection;
+                });
+            return command;
         }
 
         public StyroCommand ReadWithDeleteAndLocal(StyroCommand userRead, bool isDelete, bool local)
@@ -159,19 +171,35 @@ namespace StyroDB.Adapter.Internal
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="idDescription"></param>
+        /// <param name="userParameters"></param>
+        /// <returns></returns>
         public StyroCommand CreateSelectCommand(StyroCommand script, FieldDescription idDescription, List<FieldDescription> userParameters)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         public List<Tuple<object, string>> SelectProcess(DbReader<StyroReader> reader)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, Type> GetFieldsDescription()
         {
-            throw new NotImplementedException();
+            return new Dictionary<string, Type>();
         }
 
         public StyroCommand SetKeytoCommand(StyroCommand command, object key)
@@ -180,6 +208,10 @@ namespace StyroDB.Adapter.Internal
             return command;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <returns></returns>
         public FieldDescription GetKeyDescription()
         {
             throw new NotImplementedException();
