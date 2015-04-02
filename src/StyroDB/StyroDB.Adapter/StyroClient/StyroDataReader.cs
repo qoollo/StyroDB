@@ -11,12 +11,13 @@ namespace StyroDB.Adapter.StyroClient
         private IEnumerable<Property> _currentValue; 
         private IEnumerator<Object> _values;
 
-        internal List<Object> Values { get { return new List<object> {_values}; } }
+        internal List<object> Values { get; private set; }
 
         internal StyroDataReader(IEnumerable<object> values )
         {
             Contract.Requires(values!=null);
-            _values = values.GetEnumerator();            
+            _values = values.GetEnumerator();
+            Values = values.ToList();
         }
 
         internal virtual IEnumerable<Property> GetValueProperies(Object value)

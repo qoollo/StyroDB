@@ -17,7 +17,7 @@ using Qoollo.Impl.Writer.PerfCounters;
 
 namespace Qoollo.Impl.Writer.Db
 {
-    internal class DbLogicModule<TCommand, TKey, TValue, TConnection, TReader> : DbModule
+    public class DbLogicModule<TCommand, TKey, TValue, TConnection, TReader> : DbModule
         where TConnection : class
     {
         private readonly IHashCalculater _hashCalculater;

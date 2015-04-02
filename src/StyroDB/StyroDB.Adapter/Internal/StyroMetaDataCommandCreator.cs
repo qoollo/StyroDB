@@ -12,7 +12,7 @@ using StyroDB.InMemrory;
 
 namespace StyroDB.Adapter.Internal
 {
-    internal class StyroMetaDataCommandCreator<TKey, TValue> : IMetaDataCommandCreator<StyroCommand, StyroReader>
+    internal class StyroMetaDataCommandCreator<TKey, TValue> : IMetaDataCommandCreator<StyroCommand, StyroDataReader>
     {
         private string _tableName;
 
@@ -92,15 +92,14 @@ namespace StyroDB.Adapter.Internal
             return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ReadCommand();            
         }
 
-        public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroReader> reader, bool readuserId = true)
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroDataReader> reader, bool readuserId = true)
         {
-            var styroMeta = (StyroMetaData<TKey>) reader.GetValue(0);
-            var meta = new MetaData(styroMeta.IsLocal, styroMeta.DeleteTime, styroMeta.IsDelete);
-
-            if (readuserId)
-                meta.Id = styroMeta.Key;
-
-            return new Tuple<MetaData, bool>(meta, readuserId);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -110,8 +109,18 @@ namespace StyroDB.Adapter.Internal
         /// <returns></returns>
         public MetaData ReadMetaFromSearchData(SearchData data)
         {
-            
             throw new NotImplementedException();
+        }
+
+        public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroReader> reader, bool readuserId = true)
+        {
+            var styroMeta = (StyroMetaData<TKey>) reader.GetValue(0);
+            var meta = new MetaData(styroMeta.IsLocal, styroMeta.DeleteTime, styroMeta.IsDelete);
+
+            if (readuserId)
+                meta.Id = styroMeta.Key;
+
+            return new Tuple<MetaData, bool>(meta, readuserId);
         }
 
         public string ReadWithDeleteAndLocal(bool isDelete, bool local)
@@ -125,17 +134,7 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand ReadWithDelete(StyroCommand userRead, bool isDelete)
         {
-            var builder = new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName);
-            var command = builder
-                .ExecuteReader(wrappers =>
-                {
-                    userRead.Connection = builder.Connection;
-
-                    var collection = userRead.ExecuteReaderGetCollection().Cast<ValueWrapper<TKey, TValue>>();
-                    collection = collection.Where(x => x.StyroMetaData.IsDelete == isDelete);
-                    return collection;
-                });
-            return command;
+            return userRead;
         }
 
         public StyroCommand ReadWithDeleteAndLocal(StyroCommand userRead, bool isDelete, bool local)
@@ -188,7 +187,7 @@ namespace StyroDB.Adapter.Internal
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public List<Tuple<object, string>> SelectProcess(DbReader<StyroReader> reader)
+        public List<Tuple<object, string>> SelectProcess(DbReader<StyroDataReader> reader)
         {
             throw new NotImplementedException();
         }

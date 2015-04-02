@@ -66,6 +66,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StyroClient\StyroDataReader.cs" />
     <Compile Include="StyroClient\StyroDataReaderWithWrapper.cs" />
+    <Compile Include="StyroClient\StyroDbFactory.cs" />
     <Compile Include="StyroClient\StyroUserCommandCreator.cs" />
     <Compile Include="StyroClient\TableHandler.cs" />
     <Compile Include="StyroClient\TableHandlerBase.cs" />
@@ -75,6 +76,10 @@
     <Compile Include="Wrappers\ValueWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Client\BriksDb.Client.csproj">
+      <Project>{1BE55462-F506-45B7-AD6D-C29F36CE68E0}</Project>
+      <Name>BriksDb.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Impl\BriksDb.Impl.csproj">
       <Project>{1A78E244-B4B2-419E-B247-8532B3AFDA87}</Project>
       <Name>BriksDb.Impl</Name>

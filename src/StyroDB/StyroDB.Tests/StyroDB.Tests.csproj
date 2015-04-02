@@ -91,6 +91,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -106,12 +107,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AdapterTests\ConnectionTests.cs" />
+    <Compile Include="AdapterTests\StyroWriterTests.cs" />
     <Compile Include="AdapterTests\WrapperTest.cs" />
     <Compile Include="AdapterTests\ConverterTests.cs" />
     <Compile Include="AdapterTests\DataReaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Helper\InMemorySuccessors.cs" />
+    <Compile Include="Helper\IntDataProvider.cs" />
     <Compile Include="Helper\TestMemoryDatabase.cs" />
     <Compile Include="InMemoryTests\MemoryTableTests.cs" />
     <Compile Include="InMemoryTests\MemoryTableInterafceTests.cs" />
@@ -120,6 +123,10 @@
     <Compile Include="TestData\ValueTestClass.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Client\BriksDb.Client.csproj">
+      <Project>{1BE55462-F506-45B7-AD6D-C29F36CE68E0}</Project>
+      <Name>BriksDb.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Impl\BriksDb.Impl.csproj">
       <Project>{1A78E244-B4B2-419E-B247-8532B3AFDA87}</Project>
       <Name>BriksDb.Impl</Name>

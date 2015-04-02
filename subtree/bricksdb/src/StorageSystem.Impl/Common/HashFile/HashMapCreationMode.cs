@@ -1,6 +1,6 @@
 ﻿namespace Qoollo.Impl.Common.HashFile
 {
-    internal enum HashMapCreationMode
+    public enum HashMapCreationMode
     {
         ReadFromFile = 0,
         CreateNew = 1

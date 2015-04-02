@@ -3,7 +3,7 @@ using Qoollo.Impl.Common.HashHelp;
 
 namespace Qoollo.Client.Support
 {
-    internal class HashFakeImpl<TKey, TValue> : IHashCalculater
+    public class HashFakeImpl<TKey, TValue> : IHashCalculater
     {
         private readonly IDataProvider<TKey, TValue> _dataProvider;
 

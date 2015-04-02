@@ -11,7 +11,7 @@ using Qoollo.Impl.Configurations;
 
 namespace Qoollo.Impl.Common.HashFile
 {
-    internal class HashMap:IDisposable
+    public class HashMap:IDisposable
     {
         public List<HashMapRecord> Map { get; protected set; }
         public List<WriterDescription> Servers { get; private set; }

@@ -4,7 +4,7 @@ using Qoollo.Impl.Common;
 namespace Qoollo.Impl.NetInterfaces
 {
     [ServiceContract]
-    internal interface ICommonCommunicationNet
+    public interface ICommonCommunicationNet
     {
         [OperationContract]
         RemoteResult SendSync(NetCommand command);

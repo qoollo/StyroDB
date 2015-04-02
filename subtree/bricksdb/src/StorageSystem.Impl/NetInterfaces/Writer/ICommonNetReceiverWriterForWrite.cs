@@ -3,7 +3,7 @@
 namespace Qoollo.Impl.NetInterfaces.Writer
 {
     [ServiceContract]
-    internal interface ICommonNetReceiverWriterForWrite : IRemoteNet, ICommonCommunicationNet
+    public interface ICommonNetReceiverWriterForWrite : IRemoteNet, ICommonCommunicationNet
     {
     }
 }

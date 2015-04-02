@@ -10,7 +10,7 @@ using StyroDB.Adapter.Wrappers;
 namespace StyroDB.Adapter.StyroClient
 {
     internal class StyroUserCommandCreator<TKey, TValue> :
-        IUserCommandCreator<StyroCommand, StyroConnection, TKey, TValue, StyroDataReader> where TValue : class
+        IUserCommandCreator<StyroCommand, StyroConnection, TKey, TValue, StyroDataReader>
     {
         private readonly string _tableName;
 
@@ -64,11 +64,13 @@ namespace StyroDB.Adapter.StyroClient
 
         public StyroCommand Read()
         {
-            return new StyroCommandBuilder<TKey, TValue>(_tableName).ReadCommand();
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName)
+                .ReadCommand();
         }
 
         public TValue ReadObjectFromReader(DbReader<StyroDataReader> reader, out TKey key)
         {
+            var obj = reader.Reader.Values;
             var value = (ValueWrapper<TKey, TValue>)reader.Reader.Values[0];
             key = value.StyroMetaData.Key;
             return value.Value;

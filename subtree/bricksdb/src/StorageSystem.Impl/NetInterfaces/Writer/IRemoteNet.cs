@@ -5,7 +5,7 @@ using Qoollo.Impl.Common.Data.DataTypes;
 namespace Qoollo.Impl.NetInterfaces.Writer
 {
     [ServiceContract]
-    internal interface IRemoteNet
+    public interface IRemoteNet
     {
         [OperationContract(IsOneWay = true)]
         void Process(InnerData data);

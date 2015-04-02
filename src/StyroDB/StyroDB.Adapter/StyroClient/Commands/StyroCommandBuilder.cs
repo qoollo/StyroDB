@@ -100,14 +100,14 @@ namespace StyroDB.Adapter.StyroClient.Commands
 
         public StyroCommand ReadCommand()
         {
-            var ret = new StyroCommandGeneric<TKey>(_tableName);
-            ret.ExecuteReaderInner = (connection, s) =>
+            var command = new StyroCommandGeneric<TKey>(_tableName);
+            command.ExecuteReaderInner = (connection, s) =>
             {
                 var list = new List<object>();
                 var table = connection.GetTable<TKey, TValue>(_tableName);
                 try
                 {
-                    var value = table.Read(ret.Key);
+                    var value = table.Read(command.Key);
                     list.Add(value);
                 }
                 catch (KeyNotFoundException)
@@ -116,7 +116,10 @@ namespace StyroDB.Adapter.StyroClient.Commands
 
                 return list;
             };
-            return ret;
+
+            if (_wrapperReader)
+                command.ExecuteReaderFunc = objects => new StyroDataReaderWithWrapper<TKey, TValue>(objects);
+            return command;
         }
 
         public StyroCommand ReadAllDataCommand()

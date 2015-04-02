@@ -3,7 +3,7 @@ using Qoollo.Impl.Configurations;
 
 namespace Qoollo.Impl.Common.HashFile
 {
-    internal class HashWriter:HashMap
+    public class HashWriter:HashMap
     {
         public HashWriter(HashMapConfiguration configuration) : base(configuration)
         {
