@@ -11,6 +11,8 @@ namespace StyroDB.Adapter.StyroClient
         private IEnumerable<Property> _currentValue; 
         private IEnumerator<Object> _values;
 
+        internal List<Object> Values { get { return new List<object> {_values}; } }
+
         internal StyroDataReader(IEnumerable<object> values )
         {
             Contract.Requires(values!=null);
