@@ -80,9 +80,7 @@ namespace StyroDB.Tests.AdapterTests
             var collection = new  List<object>();
             var dr = new StyroDataReader(collection);
 
-            dr.GetValue(0);
+            dr.GetValue(0).ShouldBeNull();
         }
-
-
     }
 }

@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\InMemoryException.cs" />
     <Compile Include="Exceptions\InvalidTableTypeException.cs" />
+    <Compile Include="Exceptions\StyroDbException.cs" />
     <Compile Include="Exceptions\TableAlreadyExistException.cs" />
     <Compile Include="BasicTable.cs" />
     <Compile Include="IMemoryDatabase.cs" />
@@ -95,6 +96,9 @@
     <Compile Include="MemoryTable.cs" />
     <Compile Include="MemoryTableInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

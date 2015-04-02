@@ -32,11 +32,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Qoollo.Turbo">
       <HintPath>..\packages\Qoollo.Turbo.2.1.1\lib\net45\Qoollo.Turbo.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.4\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal\StyroMetaData.cs" />
+    <Compile Include="Converter\Exceptions\StyroQueryException.cs" />
+    <Compile Include="Converter\QueryConverter.cs" />
     <Compile Include="StyroClient\Commands\IStyroCommandSetId.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandBuilder.cs" />
     <Compile Include="StyroClient\StyroCommand.cs" />
