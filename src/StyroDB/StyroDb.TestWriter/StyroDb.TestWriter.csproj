@@ -52,6 +52,10 @@
       <Project>{1be55462-f506-45b7-ad6d-c29f36ce68e0}</Project>
       <Name>BriksDb.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Impl\BriksDb.Impl.csproj">
+      <Project>{1A78E244-B4B2-419E-B247-8532B3AFDA87}</Project>
+      <Name>BriksDb.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\StyroDB.Adapter\StyroDB.Adapter.csproj">
       <Project>{955996c4-37f6-47ca-b525-69aae3e50584}</Project>
       <Name>StyroDB.Adapter</Name>
