@@ -69,10 +69,17 @@ namespace StyroDB.Adapter.Internal
             return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ExecuteNonQuery(
                 (key, table) =>
                 {
-                    var value = table.Read(key);
-                    value.StyroMetaData.IsDelete = true;
-                    value.StyroMetaData.DeleteTime = DateTime.Now;
-                    table.Write(key, value);
+                    try
+                    {
+                        var value = table.Read(key);
+                        value.StyroMetaData.IsDelete = true;
+                        value.StyroMetaData.DeleteTime = DateTime.Now;
+                        table.Write(key, value);
+                    }
+                    catch (KeyNotFoundException e)
+                    {                        
+                    }
+                    
                 });
         }
 
@@ -134,7 +141,17 @@ namespace StyroDB.Adapter.Internal
 
         public StyroCommand ReadWithDelete(StyroCommand userRead, bool isDelete)
         {
-            return userRead;
+            var builder = new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName);
+            var command = builder
+                .ExecuteReaderGeneric(wrappers =>
+                {
+                    userRead.Connection = builder.Connection;
+
+                    var collection = userRead.ExecuteReaderGetCollection().Cast<ValueWrapper<TKey, TValue>>();
+                    collection = collection.Where(x => x.StyroMetaData.IsDelete == isDelete);
+                    return collection;
+                });
+            return command;
         }
 
         public StyroCommand ReadWithDeleteAndLocal(StyroCommand userRead, bool isDelete, bool local)

@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using FluentAssert;
@@ -144,6 +145,16 @@ namespace StyroDB.Tests.AdapterTests
         }
 
         [TestMethod]
+        public void DbModule_ProcessSync_WriteDiplicateValue_NoException()
+        {
+            var data = CreateData(1, 1, OperationName.Create);
+            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeNull();
+
+            _table.Read(1).Value.ShouldBeEqualTo(1);
+        }
+
+        [TestMethod]
         public void DbModule_ProcessSync_WriteAndReadValue()
         {
             var data = CreateData(1, 1, OperationName.Create);
@@ -153,6 +164,15 @@ namespace StyroDB.Tests.AdapterTests
             data = _channel.ReadOperation(data);
 
             _provider.DeserializeValue(data.Data).ShouldBeEqualTo(1);
+        }
+
+        [TestMethod]
+        public void DbModule_ProcessSync_ReadValueWithoutWrite()
+        {
+            var data = CreateData(1, 100, OperationName.Read);
+            data = _channel.ReadOperation(data);
+
+            data.Data.ShouldBeNull();
         }
 
         [TestMethod]
@@ -174,6 +194,59 @@ namespace StyroDB.Tests.AdapterTests
             }
 
 
+        }
+
+        [TestMethod]
+        public void DbModule_ProcessSync_UpdateWithWrite_OnlyOneValue()
+        {
+            var data = CreateData(1, 1, OperationName.Create);
+            _channel.ProcessSync(data).ShouldBeNull();
+            _table.Read(1).Value.ShouldBeEqualTo(1);
+
+            data = CreateData(1, 10, OperationName.Update);
+            _channel.ProcessSync(data).ShouldBeNull();
+
+            _table.Read(1).Value.ShouldBeEqualTo(10);
+
+            _table.Query(x => x).Count().ShouldBeEqualTo(1);
+        }
+
+        [TestMethod]
+        public void DbModule_ProcessSync_UpdateWithoutWrite()
+        {
+            var data = CreateData(1, 10, OperationName.Update);
+            _channel.ProcessSync(data).ShouldBeNull();
+
+            _table.Read(1).Value.ShouldBeEqualTo(10);
+
+            _table.Query(x => x).Count().ShouldBeEqualTo(1);
+        }
+
+        [TestMethod]
+        public void DbModule_ProcessSync_DeleteWithWrite()
+        {
+            var data = CreateData(1, 1, OperationName.Create);
+            _channel.ProcessSync(data).ShouldBeNull();
+
+            data = CreateData(1, 100, OperationName.Delete);
+            _channel.ProcessSync(data).ShouldBeNull();
+
+            data = CreateData(1, 100, OperationName.Read);
+            data = _channel.ReadOperation(data);
+
+            data.Data.ShouldBeNull();
+        }
+
+        [TestMethod]
+        public void DbModule_ProcessSync_DeleteWithWrite2()
+        {
+            var data = CreateData(1, 100, OperationName.Delete);
+            _channel.ProcessSync(data).ShouldBeNull();
+
+            data = CreateData(1, 100, OperationName.Read);
+            data = _channel.ReadOperation(data);
+
+            data.Data.ShouldBeNull();
         }
     }
 }

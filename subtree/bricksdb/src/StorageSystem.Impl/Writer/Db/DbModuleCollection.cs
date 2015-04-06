@@ -105,6 +105,7 @@ namespace Qoollo.Impl.Writer.Db
         public override RemoteResult Create(InnerData obj, bool local)
         {
             return CommonMethodHandler(obj, (dbModule) => dbModule.Create(obj, local));
+        
         }
 
         public override RemoteResult Update(InnerData obj, bool local)

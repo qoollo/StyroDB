@@ -76,6 +76,26 @@ namespace StyroDB.Adapter.StyroClient.Commands
             return command;
         }
 
+        public StyroCommand ExecuteReaderGeneric(Func<IEnumerable<TValue>, IEnumerable<TValue>> filter)
+        {
+            Contract.Requires(filter != null);
+            var command = new StyroCommandGeneric<TKey>(_tableName)
+            {
+                ExecuteReaderInner = (connection, s) =>
+                {
+                    Connection = connection;
+                    var table = connection.GetTable<TKey, TValue>(s);
+                    var result = table.Query(filter);
+
+                    return result.Cast<object>();
+                }
+            };
+
+            if (_wrapperReader)
+                command.ExecuteReaderFunc = objects => new StyroDataReaderWithWrapper<TKey, TValue>(objects);
+            return command;
+        }
+
         public StyroCommand ReadCommand(TKey key)
         {
             return new StyroCommand(_tableName)
