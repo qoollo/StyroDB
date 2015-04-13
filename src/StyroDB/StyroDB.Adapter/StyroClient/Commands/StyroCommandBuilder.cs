@@ -15,6 +15,7 @@ namespace StyroDB.Adapter.StyroClient.Commands
         private readonly string _tableName;
         private bool _wrapperReader = false;
         public StyroConnection Connection { get; private set; }
+        public TKey Key { get; private set; }
 
         public StyroCommandBuilder(string tableName)
         {
@@ -79,16 +80,17 @@ namespace StyroDB.Adapter.StyroClient.Commands
         public StyroCommand ExecuteReaderGeneric(Func<IEnumerable<TValue>, IEnumerable<TValue>> filter)
         {
             Contract.Requires(filter != null);
-            var command = new StyroCommandGeneric<TKey>(_tableName)
-            {
-                ExecuteReaderInner = (connection, s) =>
-                {
-                    Connection = connection;
-                    var table = connection.GetTable<TKey, TValue>(s);
-                    var result = table.Query(filter);
+            var command = new StyroCommandGeneric<TKey>(_tableName);
 
-                    return result.Cast<object>();
-                }
+            command.ExecuteReaderInner = (connection, s) =>
+            {
+                Key = command.Key;
+                Connection = connection;
+                var table = connection.GetTable<TKey, TValue>(s);
+                var result = table.Query(filter);
+
+                return result.Cast<object>();
+
             };
 
             if (_wrapperReader)

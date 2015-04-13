@@ -142,10 +142,12 @@ namespace StyroDB.Adapter.Internal
         public StyroCommand ReadWithDelete(StyroCommand userRead, bool isDelete)
         {
             var builder = new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName);
+
             var command = builder
                 .ExecuteReaderGeneric(wrappers =>
                 {
                     userRead.Connection = builder.Connection;
+                    SetKeytoCommand(userRead, builder.Key);
 
                     var collection = userRead.ExecuteReaderGetCollection().Cast<ValueWrapper<TKey, TValue>>();
                     collection = collection.Where(x => x.StyroMetaData.IsDelete == isDelete);

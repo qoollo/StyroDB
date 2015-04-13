@@ -53,12 +53,12 @@ namespace StyroDB.Tests.AdapterTests
 
             _writer.Api.InitDb().IsError.ShouldBeFalse();
 
-            _channel = OpenChannel();
+            _channel = OpenChannel<ICommonNetReceiverWriterForWrite>();
 
             _table = GetTable<int, int>(factory, TableName);
         }
 
-        public ICommonNetReceiverWriterForWrite OpenChannel()
+        public T OpenChannel<T>()
         {
             string endPointAddr = string.Format("net.tcp://{0}:{1}/{2}", Host, PortForDistributor, Consts.WcfServiceName);
             var endpointAddress =
@@ -71,7 +71,7 @@ namespace StyroDB.Tests.AdapterTests
                 MaxBufferSize = 2147483647,                
             };
 
-            var cf = new ChannelFactory<ICommonNetReceiverWriterForWrite>(tcpBinding, endpointAddress);
+            var cf = new ChannelFactory<T>(tcpBinding, endpointAddress);
             foreach (OperationDescription op in cf.Endpoint.Contract.Operations)
             {
                 var dataContractBehavior = op.Behaviors.Find<DataContractSerializerOperationBehavior>();
@@ -238,7 +238,7 @@ namespace StyroDB.Tests.AdapterTests
         }
 
         [TestMethod]
-        public void DbModule_ProcessSync_DeleteWithWrite2()
+        public void DbModule_ProcessSync_DeleteWithoutWrite()
         {
             var data = CreateData(1, 100, OperationName.Delete);
             _channel.ProcessSync(data).ShouldBeNull();
@@ -247,6 +247,12 @@ namespace StyroDB.Tests.AdapterTests
             data = _channel.ReadOperation(data);
 
             data.Data.ShouldBeNull();
+        }
+
+        [TestMethod]
+        public void DbModule_ProcessSync_Select()
+        {   
+
         }
     }
 }
