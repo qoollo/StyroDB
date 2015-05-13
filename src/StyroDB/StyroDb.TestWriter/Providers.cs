@@ -8,7 +8,7 @@ using Qoollo.Client.Support;
 
 namespace StyroDb.TestWriter
 {
-    class IntDataProvider : CommonDataProvider<int, int>
+    public class IntDataProvider : CommonDataProvider<int, int>
     {
         public override string CalculateHashFromKey(int key)
         {
@@ -16,7 +16,7 @@ namespace StyroDb.TestWriter
         }
     }
 
-    class StringDataProvider : CommonDataProvider<string, String>
+    public class StringDataProvider : CommonDataProvider<string, String>
     {
         public override string CalculateHashFromKey(string key)
         {

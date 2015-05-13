@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BriksDb.Client", "..\..\sub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StyroDb.TestWriter", "StyroDb.TestWriter\StyroDb.TestWriter.csproj", "{AA6ED4CE-78D4-4B42-B6DE-29BCD66FFACD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BriksDb.RedisInterface", "..\..\subtree\bricksdb\src\BriksDb.RedisInterface\BriksDb.RedisInterface.csproj", "{B60B2666-0473-46DC-A81E-DD64A8A7E01B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -54,6 +56,10 @@ Global
 		{AA6ED4CE-78D4-4B42-B6DE-29BCD66FFACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA6ED4CE-78D4-4B42-B6DE-29BCD66FFACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA6ED4CE-78D4-4B42-B6DE-29BCD66FFACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B60B2666-0473-46DC-A81E-DD64A8A7E01B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B60B2666-0473-46DC-A81E-DD64A8A7E01B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B60B2666-0473-46DC-A81E-DD64A8A7E01B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B60B2666-0473-46DC-A81E-DD64A8A7E01B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +67,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1A78E244-B4B2-419E-B247-8532B3AFDA87} = {B2F585AA-EB41-420D-95AE-B7DF2D4A3A7B}
 		{1BE55462-F506-45B7-AD6D-C29F36CE68E0} = {B2F585AA-EB41-420D-95AE-B7DF2D4A3A7B}
+		{B60B2666-0473-46DC-A81E-DD64A8A7E01B} = {B2F585AA-EB41-420D-95AE-B7DF2D4A3A7B}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

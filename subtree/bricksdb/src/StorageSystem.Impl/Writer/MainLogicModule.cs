@@ -41,15 +41,15 @@ namespace Qoollo.Impl.Writer
             switch (data.Transaction.OperationName)
             {
                 case OperationName.Create:
-                    CheckResult(data, _db.Create(data, local));
+                    ret = CheckResult(data, _db.Create(data, local));
                     WriterCounters.Instance.CreatePerSec.OperationFinished();
                     break;
                 case OperationName.Custom:
-                    CheckResult(data, _db.CustomOperation(data, local));
+                    ret = CheckResult(data, _db.CustomOperation(data, local));
                     WriterCounters.Instance.CustomOperationPerSec.OperationFinished();
                     break;
                 case OperationName.Delete:
-                    CheckResult(data, _db.Delete(data));
+                    ret = CheckResult(data, _db.Delete(data));
                     WriterCounters.Instance.DeletePerSec.OperationFinished();
                     break;
                 case OperationName.RestoreUpdate:
@@ -57,7 +57,7 @@ namespace Qoollo.Impl.Writer
                     WriterCounters.Instance.RestoreUpdatePerSec.OperationFinished();
                     break;
                 case OperationName.Update:
-                    CheckResult(data, _db.Update(data, local));
+                    ret = CheckResult(data, _db.Update(data, local));
                     WriterCounters.Instance.UpdatePerSec.OperationFinished();
                     break;
             }
@@ -107,14 +107,18 @@ namespace Qoollo.Impl.Writer
             return  _distributor.IsMine(data.Transaction.EventHash);
         }
 
-        private void CheckResult(InnerData data, RemoteResult result)
-        {
+        private RemoteResult CheckResult(InnerData data, RemoteResult result)
+        {            
             if (result is InnerFailResult)
             {
                 data.Transaction.SetError();
                 data.Transaction.AddErrorDescription(result.Description);
             }
+            if (data.Transaction.OperationType == OperationType.Sync)
+                return result;
+
             _queue.TransactionAnswerQueue.Add(data.Transaction);
+            return null;
         }
 
         #endregion

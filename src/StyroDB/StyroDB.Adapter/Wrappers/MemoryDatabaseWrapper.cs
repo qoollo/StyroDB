@@ -19,8 +19,7 @@ namespace StyroDB.Adapter.Wrappers
         }
 
         public void Dispose()
-        {
-            _memoryDatabase.Dispose();
+        {            
         }
 
         public IMemoryTable<TKey, TValue> CreateTable<TKey, TValue>(string name)
@@ -44,7 +43,7 @@ namespace StyroDB.Adapter.Wrappers
             var type = typeof (ValueWrapper<,>);
             var genericType = typeof (TValue);
 
-            if (genericType.IsValueType) return false;
+            if (genericType.IsValueType || genericType == typeof(string)) return false;
 
             return type == genericType.GetGenericTypeDefinition();
         }

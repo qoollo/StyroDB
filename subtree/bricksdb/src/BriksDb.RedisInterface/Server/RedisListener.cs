@@ -21,7 +21,7 @@ namespace BricksDb.RedisInterface.Server
         {
             _process = process;
             _processMessageFunc = process.ProcessMessage;
-            var ipAddress = LocalIpAddress();
+            var ipAddress = IPAddress.Parse(ConfigurationHelper.Instance.Localhost);
             var localEndPoint = new IPEndPoint(ipAddress, 11000);
             _tcpListener = new TcpListener(localEndPoint);
         }
