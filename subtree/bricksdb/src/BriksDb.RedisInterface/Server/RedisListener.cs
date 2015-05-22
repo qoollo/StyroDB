@@ -51,6 +51,37 @@ namespace BricksDb.RedisInterface.Server
 
         }
 
+        private void ProcessSocketLoop(Socket handler)
+        {
+            try
+            {
+                bool flag = true;
+                var bytes = new byte[1024];
+
+                while (flag)
+                {                    
+                    int bytesRec = handler.Receive(bytes);
+                    if (bytesRec != 0)
+                    {
+                        var data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        var responce = _processMessageFunc(data);
+                        byte[] msg = Encoding.ASCII.GetBytes(responce);
+
+                        handler.Send(msg);
+                        //Send(handler, msg);
+                    }
+                    else
+                        flag = false;
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+        }
+
         private void Send(Socket handler, byte[] msg)
         {
             var offset = 0;
@@ -83,7 +114,8 @@ namespace BricksDb.RedisInterface.Server
                 {
                     var task = _tcpListener.AcceptSocketAsync();
                     task.Wait();
-                    _queue.Add(task.Result);
+                    //_queue.Add(task.Result);
+                    Task.Factory.StartNew(() => ProcessSocketLoop(task.Result));
                 }
             }
             catch (Exception e)

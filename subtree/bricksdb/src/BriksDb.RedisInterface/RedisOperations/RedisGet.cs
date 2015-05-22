@@ -12,10 +12,9 @@ namespace BricksDb.RedisInterface.RedisOperations
             _dataAdapter = dataAdapter;
         }
 
-        public override string PerformOperation(object parameterArray)
+        public override string PerformOperation(string[] parameterArray)
         {
-            var parameters = parameterArray as string[]; // TODO: проверить на null
-            var key = parameters[0];
+            var key = parameterArray[0];
             RequestDescription request;
 
             _dataAdapter.Read(key, out request);

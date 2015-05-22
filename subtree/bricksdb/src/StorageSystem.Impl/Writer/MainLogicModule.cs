@@ -114,10 +114,12 @@ namespace Qoollo.Impl.Writer
                 data.Transaction.SetError();
                 data.Transaction.AddErrorDescription(result.Description);
             }
-            if (data.Transaction.OperationType == OperationType.Sync)
-                return result;
 
             _queue.TransactionAnswerQueue.Add(data.Transaction);
+
+            if (data.Transaction.OperationType == OperationType.Sync)
+                return result;
+            
             return null;
         }
 

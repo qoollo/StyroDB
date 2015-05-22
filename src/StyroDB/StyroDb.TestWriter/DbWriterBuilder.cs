@@ -31,6 +31,8 @@ namespace StyroDb.TestWriter
             _writer.Build();
             _writer.AddDbModule(new StyroDbFactory<int, int>("TestTable", new IntDataProvider()));
             _writer.AddDbModule(new StyroDbFactory<string, string>("RedisTable", new StringDataProvider()));
+            _writer.AddDbModule(new StyroDbFactory<long, string>("BenchmarkTable", new LongStringProvider()));
+            
             _writer.Start();
         }
 

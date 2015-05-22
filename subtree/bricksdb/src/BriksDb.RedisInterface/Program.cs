@@ -7,7 +7,7 @@ namespace BricksDb.RedisInterface
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("1 - To Briks\n2 - To Writer\n");
+            Console.WriteLine("1 - To Briks\n2 - To Writer\n3 - To Styro\n");
             int choose = int.Parse(Console.ReadLine());
 
             RedisToSmthSystem builder = null;
@@ -19,6 +19,9 @@ namespace BricksDb.RedisInterface
                     break;
                 case 2:
                     builder = new RedisToDbWriter();
+                    break;
+                case 3:
+                    builder = new RedisToStyro();
                     break;
             }
 

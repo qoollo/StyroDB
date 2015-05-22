@@ -23,7 +23,7 @@ namespace BricksDb.RedisInterface.Server
                 new StorageConfiguration(1, Consts.FileWithHashName, Consts.CountRetryWaitAnswerInRestore,
                     Consts.TimeoutWaitAnswerInRestore, Consts.TimeoutSendAnswerInRestore,
                     Consts.PeriodDeleteAfterRestore, TimeSpan.FromDays(1)),
-                new CommonConfiguration(ConfigurationHelper.Instance.CountThreadsWriter, 100));
+                new CommonConfiguration(ConfigurationHelper.Instance.CountThreadsWriter, 10000));
         }
 
         protected override void InnerBuild(RedisMessageProcessor processor)

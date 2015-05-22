@@ -17,7 +17,7 @@ namespace BricksDb.RedisInterface.RedisOperations
             OperationName = operationName;
         }
 
-        public abstract string PerformOperation(object parameterArray);
+        public abstract string PerformOperation(string[] parameterArray);
 
         public void WritePerformanceToConsole()
         {

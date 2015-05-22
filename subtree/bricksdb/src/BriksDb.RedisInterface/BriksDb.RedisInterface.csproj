@@ -55,6 +55,7 @@
     <Compile Include="RedisOperations\DbWriterDataAdapter.cs" />
     <Compile Include="RedisOperations\IDataAdapter.cs" />
     <Compile Include="RedisOperations\ProxyDataAdapter.cs" />
+    <Compile Include="RedisOperations\StyroDataAdapter.cs" />
     <Compile Include="Server\ConfigurationHelper.cs" />
     <Compile Include="Server\RedisListener.cs" />
     <Compile Include="Server\RedisMessageProcessor.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Server\RedisToBriks.cs" />
     <Compile Include="Server\RedisToDbWriter.cs" />
     <Compile Include="Server\RedisToSmthSystem.cs" />
+    <Compile Include="Server\RedisToStyro.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -78,6 +80,10 @@
     <ProjectReference Include="..\..\..\..\src\StyroDB\StyroDb.TestWriter\StyroDb.TestWriter.csproj">
       <Project>{AA6ED4CE-78D4-4B42-B6DE-29BCD66FFACD}</Project>
       <Name>StyroDb.TestWriter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\src\StyroDB\StyroDB\StyroDB.InMemory.csproj">
+      <Project>{A44CDE0D-12D9-4BBB-B352-B7A51E070FBB}</Project>
+      <Name>StyroDB.InMemory</Name>
     </ProjectReference>
     <ProjectReference Include="..\StorageSystem.Client\BriksDb.Client.csproj">
       <Project>{1BE55462-F506-45B7-AD6D-C29F36CE68E0}</Project>

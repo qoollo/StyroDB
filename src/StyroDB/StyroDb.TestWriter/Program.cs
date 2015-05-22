@@ -27,7 +27,7 @@ namespace StyroDb.TestWriter
             new AppBuilder(true, builder.GetType())
                 .EnableControlCommands()
                 .EnableInfoCommands()
-                .WithDefaultStartupString(DefaultStatupArguments.Interactive)
+                .WithDefaultStartupString(DefaultStatupArguments.Debug)
                 .Run(args);            
 
         }       

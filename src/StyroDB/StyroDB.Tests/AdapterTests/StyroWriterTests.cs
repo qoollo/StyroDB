@@ -11,6 +11,7 @@ using Qoollo.Impl.Common.Data.DataTypes;
 using Qoollo.Impl.Common.Data.Support;
 using Qoollo.Impl.Common.Data.TransactionTypes;
 using Qoollo.Impl.Common.HashFile;
+using Qoollo.Impl.Common.NetResults;
 using Qoollo.Impl.Configurations;
 using Qoollo.Impl.NetInterfaces.Writer;
 using StyroDB.Adapter.Internal;
@@ -140,7 +141,7 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_WriteValue()
         {
             var data = CreateData(1, 1, OperationName.Create);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
             _table.Read(1).Value.ShouldBeEqualTo(1);
         }
 
@@ -148,8 +149,8 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_WriteDiplicateValue_NoException()
         {
             var data = CreateData(1, 1, OperationName.Create);
-            _channel.ProcessSync(data).ShouldBeNull();
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             _table.Read(1).Value.ShouldBeEqualTo(1);
         }
@@ -158,7 +159,7 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_WriteAndReadValue()
         {
             var data = CreateData(1, 1, OperationName.Create);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             data = CreateData(1, 100, OperationName.Read);
             data = _channel.ReadOperation(data);
@@ -182,7 +183,7 @@ namespace StyroDB.Tests.AdapterTests
             for (int i = 0; i < count; i++)
             {
                 var data = CreateData(i, i, OperationName.Create);
-                _channel.ProcessSync(data).ShouldBeNull();    
+                _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
             }
 
             for (int i = 0; i < count; i++)
@@ -200,11 +201,11 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_UpdateWithWrite_OnlyOneValue()
         {
             var data = CreateData(1, 1, OperationName.Create);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
             _table.Read(1).Value.ShouldBeEqualTo(1);
 
             data = CreateData(1, 10, OperationName.Update);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             _table.Read(1).Value.ShouldBeEqualTo(10);
 
@@ -215,7 +216,7 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_UpdateWithoutWrite()
         {
             var data = CreateData(1, 10, OperationName.Update);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             _table.Read(1).Value.ShouldBeEqualTo(10);
 
@@ -226,10 +227,10 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_DeleteWithWrite()
         {
             var data = CreateData(1, 1, OperationName.Create);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             data = CreateData(1, 100, OperationName.Delete);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             data = CreateData(1, 100, OperationName.Read);
             data = _channel.ReadOperation(data);
@@ -241,7 +242,7 @@ namespace StyroDB.Tests.AdapterTests
         public void DbModule_ProcessSync_DeleteWithoutWrite()
         {
             var data = CreateData(1, 100, OperationName.Delete);
-            _channel.ProcessSync(data).ShouldBeNull();
+            _channel.ProcessSync(data).ShouldBeOfType<SuccessResult>();
 
             data = CreateData(1, 100, OperationName.Read);
             data = _channel.ReadOperation(data);

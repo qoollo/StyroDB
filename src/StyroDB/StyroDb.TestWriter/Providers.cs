@@ -23,4 +23,12 @@ namespace StyroDb.TestWriter
             return key;
         }
     }
+
+    public class LongStringProvider : CommonDataProvider<long, string>
+    {
+        public override string CalculateHashFromKey(long key)
+        {
+            return key.ToString();
+        }
+    }
 }
