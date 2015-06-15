@@ -15,8 +15,8 @@ namespace Qoollo.Benchmark.Executor
 {
     class CollectorExecutor
     {
-        private readonly Dictionary<string, DbFactory> _dbFactories
-            ;
+        private readonly Dictionary<string, DbFactory> _dbFactories;
+
         public CollectorExecutor()
         {
             _dbFactories = new Dictionary<string, DbFactory>();
@@ -24,7 +24,7 @@ namespace Qoollo.Benchmark.Executor
 
         public void AddDbFactory(string name, DbFactory dbFactory)
         {
-            _dbFactories.Add(name, dbFactory);
+            _dbFactories.Add(name.Trim().ToLower(), dbFactory);
         }
 
         private DbFactory FindDbFactory(string dbFactoryName)

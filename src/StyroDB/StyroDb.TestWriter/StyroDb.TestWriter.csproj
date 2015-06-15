@@ -70,6 +70,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\subtree\bricksdb\src\BriksDb.Benchmark\BriksDb.Benchmark.csproj">
+      <Project>{01157353-60ee-4ac6-aaeb-6d7c19b10564}</Project>
+      <Name>BriksDb.Benchmark</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\subtree\bricksdb\src\StorageSystem.Client\BriksDb.Client.csproj">
       <Project>{1be55462-f506-45b7-ad6d-c29f36ce68e0}</Project>
       <Name>BriksDb.Client</Name>

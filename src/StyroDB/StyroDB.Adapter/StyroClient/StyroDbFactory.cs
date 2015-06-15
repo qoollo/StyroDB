@@ -29,7 +29,7 @@ namespace StyroDB.Adapter.StyroClient
 
         public override ScriptParser GetParser()
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

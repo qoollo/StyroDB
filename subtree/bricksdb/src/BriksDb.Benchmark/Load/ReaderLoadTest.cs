@@ -40,15 +40,14 @@ namespace Qoollo.Benchmark.Load
 
         public override bool OneDataProcess()
         {
-            var exit = true;
             if (_reader == null || !ReadData())
             {
                 if (CreateNewReader())
                     ReadData();
                 else
-                    exit = false;
+                    return false;
             }
-            return exit;
+            return true;
         }
 
         public bool NeedCreateReader()
@@ -66,7 +65,14 @@ namespace Qoollo.Benchmark.Load
             _timer = _metrics.Get(MetricName.PackageData).StartMeasure();
 
             var value = _queries.Dequeue();
-            _reader = value.IsValueExist ? _adapter.ExecuteQuery(value.Value) : null;
+            try
+            {
+                _reader = value.IsValueExist ? _adapter.ExecuteQuery(value.Value) : null;
+
+            }
+            catch (Exception)
+            {
+            }
             return _reader != null;
         }
 

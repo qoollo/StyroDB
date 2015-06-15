@@ -106,7 +106,13 @@ namespace StyroDB.Adapter.Internal
         /// <returns></returns>
         public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroDataReader> reader, bool readuserId = true)
         {
-            throw new NotImplementedException();
+            var styroMeta = (StyroMetaData<TKey>)reader.GetValue(0);
+            var meta = new MetaData(styroMeta.IsLocal, styroMeta.DeleteTime, styroMeta.IsDelete);
+
+            if (readuserId)
+                meta.Id = styroMeta.Key;
+
+            return new Tuple<MetaData, bool>(meta, readuserId);
         }
 
         /// <summary>
@@ -117,17 +123,6 @@ namespace StyroDB.Adapter.Internal
         public MetaData ReadMetaFromSearchData(SearchData data)
         {
             throw new NotImplementedException();
-        }
-
-        public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroReader> reader, bool readuserId = true)
-        {
-            var styroMeta = (StyroMetaData<TKey>) reader.GetValue(0);
-            var meta = new MetaData(styroMeta.IsLocal, styroMeta.DeleteTime, styroMeta.IsDelete);
-
-            if (readuserId)
-                meta.Id = styroMeta.Key;
-
-            return new Tuple<MetaData, bool>(meta, readuserId);
         }
 
         public string ReadWithDeleteAndLocal(bool isDelete, bool local)

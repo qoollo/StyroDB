@@ -18,8 +18,8 @@ namespace StyroDb.TestWriter
 
         public void Start()
         {
-            Qoollo.Logger.Initialization.Initializer.InitializeLoggerInAssembly(
-                LoggerDefault.ConsoleLogger, typeof (WriterApi).Assembly);
+            //Qoollo.Logger.Initialization.Initializer.InitializeLoggerInAssembly(
+            //    LoggerDefault.ConsoleLogger, typeof(WriterApi).Assembly);
 
 
             _writer = new WriterApi(new StorageNetConfiguration(ConfigurationHelper.Instance.DbWriterHost,
@@ -34,6 +34,8 @@ namespace StyroDb.TestWriter
             _writer.AddDbModule(new StyroDbFactory<long, string>("BenchmarkTable", new LongStringProvider()));
             
             _writer.Start();
+
+            _writer.Api.InitDb();
         }
 
         public void Stop()
