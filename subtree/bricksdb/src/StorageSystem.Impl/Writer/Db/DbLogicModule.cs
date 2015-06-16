@@ -313,21 +313,7 @@ namespace Qoollo.Impl.Writer.Db
             var result = _implModule.ExecuteNonQuery(command);
 
             return result;
-        }
-
-        public override RemoteResult AsyncProcess(bool isDeleted, bool local, int countElemnts, Action<InnerData> process,
-            Func<MetaData, bool> isMine, bool isFirstRead, ref object lastId)
-        {
-            if (_hashFromValue)
-            {
-                var command = _userCommandCreator.Read();
-                command = _metaDataCommandCreator.ReadWithDeleteAndLocal(command, isDeleted, local);
-                return ProcessRestore(command, countElemnts, process, isMine, isFirstRead, ref lastId, isDeleted);
-            }
-
-            var script = _metaDataCommandCreator.ReadWithDeleteAndLocal(isDeleted, local);
-            return ProcessRestore(script, countElemnts, process, isMine, isFirstRead, ref lastId, isDeleted);
-        }        
+        }           
 
         public override RemoteResult SelectRead(SelectDescription description, out SelectSearchResult searchResult)
         {
@@ -552,6 +538,20 @@ namespace Qoollo.Impl.Writer.Db
         }
 
         #endregion
+
+        public override RemoteResult AsyncProcess(bool isDeleted, bool local, int countElemnts, Action<InnerData> process,
+            Func<MetaData, bool> isMine, bool isFirstRead, ref object lastId)
+        {
+            if (_hashFromValue)
+            {
+                var command = _userCommandCreator.Read();
+                command = _metaDataCommandCreator.ReadWithDeleteAndLocal(command, isDeleted, local);
+                return ProcessRestore(command, countElemnts, process, isMine, isFirstRead, ref lastId, isDeleted);
+            }
+
+            var script = _metaDataCommandCreator.ReadWithDeleteAndLocal(isDeleted, local);
+            return ProcessRestore(script, countElemnts, process, isMine, isFirstRead, ref lastId, isDeleted);
+        }     
 
         #region Restore
 

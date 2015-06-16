@@ -54,6 +54,7 @@
     <Compile Include="Internal\StyroMetaData.cs" />
     <Compile Include="Converter\Exceptions\StyroQueryException.cs" />
     <Compile Include="Converter\QueryConverter.cs" />
+    <Compile Include="Internal\StyroScriptParser.cs" />
     <Compile Include="StyroClient\Commands\IStyroCommandSetId.cs" />
     <Compile Include="StyroClient\Commands\StyroCommandBuilder.cs" />
     <Compile Include="StyroClient\StyroCommand.cs" />

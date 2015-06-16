@@ -55,6 +55,7 @@ namespace StyroDB.Adapter.Converter
             {
                 {"Where", x => func(x).AsQueryable().Where(argument)},
                 {"OrderBy", x => func(x).AsQueryable().OrderBy(argument)},
+                //{"OrderByDesc", x => func(x).AsQueryable().OrderByDescending(argument)},
                 {"Take", x => func(x).Take(Convert.ToInt32(argument))},
                 {"Skip", x => func(x).Skip(Convert.ToInt32(argument))}
             };

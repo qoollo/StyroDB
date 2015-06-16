@@ -5,6 +5,7 @@ using Qoollo.Impl.Collector.Parser;
 using Qoollo.Impl.Common.Data.DataTypes;
 using Qoollo.Impl.Modules.Db.Impl;
 using Qoollo.Impl.Writer.Db.Commands;
+using StyroDB.Adapter.Converter;
 using StyroDB.Adapter.StyroClient;
 using StyroDB.Adapter.StyroClient.Commands;
 using StyroDB.Adapter.Wrappers;
@@ -98,12 +99,7 @@ namespace StyroDB.Adapter.Internal
         {
             return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName).ReadCommand();            
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        
         public Tuple<MetaData, bool> ReadMetaDataFromReader(DbReader<StyroDataReader> reader, bool readuserId = true)
         {
             var styroMeta = (StyroMetaData<TKey>)reader.GetValue(0);
@@ -114,12 +110,7 @@ namespace StyroDB.Adapter.Internal
 
             return new Tuple<MetaData, bool>(meta, readuserId);
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="data"></param>
-        /// <returns></returns>
+        
         public MetaData ReadMetaFromSearchData(SearchData data)
         {
             throw new NotImplementedException();
@@ -179,8 +170,12 @@ namespace StyroDB.Adapter.Internal
         /// <param name="idDescription"></param>
         /// <param name="userParameters"></param>
         /// <returns></returns>
-        public StyroCommand CreateSelectCommand(string script, FieldDescription idDescription, List<FieldDescription> userParameters)
+        public StyroCommand CreateSelectCommand(string script, FieldDescription idDescription,
+            List<FieldDescription> userParameters)
         {
+            
+
+            
             throw new NotImplementedException();
         }
 
@@ -227,7 +222,7 @@ namespace StyroDB.Adapter.Internal
         /// <returns></returns>
         public FieldDescription GetKeyDescription()
         {
-            throw new NotImplementedException();
+            return new FieldDescription("StyroMetaData.Key", typeof(TKey)) { IsFirstAsk = true };
         }
     }
 }
