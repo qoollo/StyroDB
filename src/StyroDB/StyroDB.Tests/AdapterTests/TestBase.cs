@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using FluentAssert;
@@ -38,7 +39,7 @@ namespace StyroDB.Tests.AdapterTests
             get { return _table; }
         }
 
-        internal IntDataProvider Provider
+        internal HashFakeImpl<int, int> Provider
         {
             get { return _provider; }
         }
@@ -46,7 +47,7 @@ namespace StyroDB.Tests.AdapterTests
         private WriterApi _writer;
         private ICommonNetReceiverWriterForWrite _channel;
         private IMemoryTable<int, ValueWrapper<int, int>> _table;
-        private IntDataProvider _provider;
+        private HashFakeImpl<int, int> _provider;
         protected const string Host = "localhost";
         protected const int PortForDistributor = 12331;
         protected const int PortForCollector = 12332;
@@ -61,7 +62,8 @@ namespace StyroDB.Tests.AdapterTests
             _writer = BuildWriter(PortForDistributor, PortForCollector, factory);
 
             _channel = OpenChannel<ICommonNetReceiverWriterForWrite>(PortForDistributor);
-            _provider = new IntDataProvider();
+
+            _provider = new HashFakeImpl<int, int>(new IntDataProvider());
 
             _table = GetTable<int, int>(factory, TableName);
         }
@@ -69,17 +71,18 @@ namespace StyroDB.Tests.AdapterTests
         protected WriterApi BuildWriter(int portForDistributor, int portForCollector,
             StyroDbFactory<int, int> factory = null)
         {
-            _writer = new WriterApi(new StorageNetConfiguration(Host, portForDistributor, portForCollector),
-                new StorageConfiguration(1), new CommonConfiguration(1, 100));
+            var writer = new WriterApi(new StorageNetConfiguration(Host, portForDistributor, portForCollector),
+                new StorageConfiguration(1, Consts.FileWithHashName, Consts.CountRetryWaitAnswerInRestore,
+                    Consts.TimeoutWaitAnswerInRestore, TimeSpan.FromMilliseconds(200)), new CommonConfiguration(1, 100));
 
-            _writer.Build();
+            writer.Build();
             if (factory == null)
                 factory = new StyroDbFactory<int, int>(TableName, new IntDataProvider());
-            _writer.AddDbModule(factory);
-            _writer.Start();
+            writer.AddDbModule(factory);
+            writer.Start();
 
-            _writer.Api.InitDb().IsError.ShouldBeFalse();
-            return _writer;
+            writer.Api.InitDb().IsError.ShouldBeFalse();
+            return writer;
         }
 
         protected virtual void Init()
@@ -162,6 +165,7 @@ namespace StyroDB.Tests.AdapterTests
             };
             return data;
         }
+        
         [TestCleanup]
         public void Clear()
         {

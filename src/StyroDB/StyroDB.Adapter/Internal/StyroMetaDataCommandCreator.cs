@@ -113,7 +113,8 @@ namespace StyroDB.Adapter.Internal
         
         public MetaData ReadMetaFromSearchData(SearchData data)
         {
-            throw new NotImplementedException();
+            var styroMeta = (StyroMetaData<TKey>) data.Fields.Find(x => x.Item2 == "StyroMetaData").Item1;
+            return new MetaData(styroMeta.IsLocal, styroMeta.DeleteTime, styroMeta.IsDelete) {Id = styroMeta.Key};
         }
 
         public string ReadWithDeleteAndLocal(bool isDelete, bool local)
@@ -173,10 +174,9 @@ namespace StyroDB.Adapter.Internal
         public StyroCommand CreateSelectCommand(string script, FieldDescription idDescription,
             List<FieldDescription> userParameters)
         {
-            
-
-            
-            throw new NotImplementedException();
+            var expr = StyroScriptParser.CreateOrder(script, idDescription, userParameters);
+            return new StyroCommandBuilder<TKey, ValueWrapper<TKey, TValue>>(_tableName)                
+                .ExecuteReader(QueryConverter.MakeFunc<ValueWrapper<TKey, TValue>>(expr));
         }
 
         /// <summary>
@@ -190,15 +190,28 @@ namespace StyroDB.Adapter.Internal
         {
             throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="reader"></param>
-        /// <returns></returns>
+        
         public List<Tuple<object, string>> SelectProcess(DbReader<StyroDataReader> reader)
-        {
-            throw new NotImplementedException();
+        {            
+            var fields = new List<Tuple<object, string>>();
+
+            for (int i = 0; i < reader.CountFields(); i++)
+            {
+                var name = reader.Reader.GetName(i);
+                var value = reader.GetValue(i);
+
+                if (string.Equals("StyroMetaData", name))
+                {
+                    fields.Add(new Tuple<object, string>(value, name));
+
+                    name = "Key";
+                    value = ((StyroMetaData<TKey>) value).Key;
+                }
+
+                fields.Add(new Tuple<object, string>(value, name));
+            }
+
+            return fields;
         }
 
         /// <summary>
@@ -222,7 +235,11 @@ namespace StyroDB.Adapter.Internal
         /// <returns></returns>
         public FieldDescription GetKeyDescription()
         {
-            return new FieldDescription("StyroMetaData.Key", typeof(TKey)) { IsFirstAsk = true };
+            return new FieldDescription("StyroMetaData.Key", typeof (TKey))
+            {
+                IsFirstAsk = true,
+                AsFieldName = "Key"
+            };
         }
     }
 }
