@@ -1,7 +1,6 @@
 ﻿using System;
 using Qoollo.Benchmark.Executor;
 using Qoollo.Concierge;
-using Qoollo.Concierge.Extensions;
 using StyroDB.Adapter.StyroClient;
 
 namespace StyroDb.TestWriter
@@ -32,8 +31,6 @@ namespace StyroDb.TestWriter
             }
 
             new AppBuilder(true, builder)
-                .EnableControlCommands()
-                .EnableInfoCommands()
                 .WithDefaultStartupString(DefaultStatupArguments.Debug)
                 .Run(args);            
 

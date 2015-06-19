@@ -3,21 +3,81 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using StyroDB.InMemrory.Exceptions;
 
 namespace StyroDB.InMemrory
 {
-    public class MemoryDatabase : IMemoryDatabase, IDisposable
+    public class MemoryDatabase : IMemoryDatabase
     {
-        private readonly Dictionary<String, BasicTable> _tables;
-        private bool _disposed;
+        private class TimerStat
+        {
+            private class ConsoleCoordinate : IDisposable
+            {
+                public ConsoleCoordinate()
+                {
+                    _x = Console.CursorLeft;
+                    _y = Console.CursorTop;
+                }
+
+                private readonly int _x;
+                private readonly int _y;
+
+                public void Dispose()
+                {
+                    Console.CursorLeft = _x;
+                    Console.CursorTop = _y;
+                }
+            }
+
+            public TimerStat()
+            {
+                _databases = new List<MemoryDatabase>();
+                _timer = new Timer(Callback, null, 0, 1000);
+            }
+
+            private readonly List<MemoryDatabase> _databases;
+
+            private readonly Timer _timer;
+
+            public void AddMemoryDatabase(MemoryDatabase database)
+            {
+                _databases.Add(database);
+            }
+
+            private void Callback(object state)
+            {
+                using (new ConsoleCoordinate())
+                {
+                    foreach (var database in _databases)
+                    {
+                        foreach (var value in database.Tables.Values)
+                        {
+                            Console.WriteLine(value.ToString());
+                        }
+                    }
+                }
+            }
+
+            public void Dispose()
+            {
+                _timer.Dispose();
+            }
+        }
+
+        internal Dictionary<String, BasicTable> Tables { get { return _tables; } }
 
         public MemoryDatabase()
         {
             _tables = new Dictionary<string, BasicTable>();
             _disposed = false;
+            Timer.AddMemoryDatabase(this);
         }
+
+        private readonly Dictionary<String, BasicTable> _tables;
+        private bool _disposed;
+        private static readonly TimerStat Timer = new TimerStat();
 
         public IMemoryTable<TKey, TValue> CreateTable<TKey, TValue>(String name)
         {
@@ -80,6 +140,7 @@ namespace StyroDB.InMemrory
         public void Dispose()
         {
             _disposed = true;
+            Timer.Dispose();
             foreach (var table in _tables)
             {
                 table.Value.Dispose();

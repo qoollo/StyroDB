@@ -12,7 +12,7 @@ namespace StyroDB.InMemrory
 
         protected readonly ReaderWriterLockSlim _cacheLock;
         protected readonly Dictionary<TKey, TValue> _innerCache;
-
+        
         public MemoryTable(String tableName):base(tableName)
         {
            _cacheLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
@@ -139,6 +139,11 @@ namespace StyroDB.InMemrory
             base.Dispose(disposing);
             if (_cacheLock != null) _cacheLock.Dispose();
             
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} - {1}", TableName, _innerCache.Count);
         }
     }
 }
