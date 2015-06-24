@@ -50,11 +50,11 @@ namespace StyroDb.TestWriter
 
 
             _writer = new WriterApi(new StorageNetConfiguration(ConfigurationHelper.Instance.DbWriterHost,
-                ConfigurationHelper.Instance.PortForDistributor, ConfigurationHelper.Instance.PortForCollector),
+                ConfigurationHelper.Instance.PortForDistributor, ConfigurationHelper.Instance.PortForCollector,Consts.WcfServiceName),
                 new StorageConfiguration(1, Consts.FileWithHashName, Consts.CountRetryWaitAnswerInRestore,
-                    Consts.TimeoutWaitAnswerInRestore, TimeSpan.FromMinutes(1),
+                    Consts.TimeoutWaitAnswerInRestore, TimeSpan.FromSeconds(1),
                     Consts.PeriodDeleteAfterRestore, periodStartDelete: TimeSpan.FromDays(1)),
-                new CommonConfiguration(ConfigurationHelper.Instance.CountThreadsWriter, 100));
+                new CommonConfiguration(ConfigurationHelper.Instance.CountThreadsWriter, 10000));
             _writer.Build();
             _writer.AddDbModule(new StyroDbFactory<int, int>("TestTable", new IntDataProvider()));
             _writer.AddDbModule(new StyroDbFactory<string, string>("RedisTable", new StringDataProvider()));

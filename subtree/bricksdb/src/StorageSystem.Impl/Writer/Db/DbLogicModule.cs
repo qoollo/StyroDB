@@ -649,7 +649,7 @@ namespace Qoollo.Impl.Writer.Db
                     break;
 
                 idDescription = PrepareKeyDescription(countElements, false, lastId);
-                select = new SelectDescription(idDescription, script, count, new List<FieldDescription>());
+                select = new SelectDescription(idDescription, script, countElements, new List<FieldDescription>());
                 ret = SelectRead(select, out result);
             }
 

@@ -69,11 +69,12 @@ namespace StyroDB.Tests.AdapterTests
         }
 
         protected WriterApi BuildWriter(int portForDistributor, int portForCollector,
-            StyroDbFactory<int, int> factory = null)
+            StyroDbFactory<int, int> factory = null, int deleteMls = 2000)
         {
             var writer = new WriterApi(new StorageNetConfiguration(Host, portForDistributor, portForCollector),
                 new StorageConfiguration(1, Consts.FileWithHashName, Consts.CountRetryWaitAnswerInRestore,
-                    Consts.TimeoutWaitAnswerInRestore, TimeSpan.FromMilliseconds(200)), new CommonConfiguration(1, 100));
+                    Consts.TimeoutWaitAnswerInRestore, TimeSpan.FromMilliseconds(200),
+                    TimeSpan.FromMilliseconds(1), TimeSpan.FromMilliseconds(deleteMls)), new CommonConfiguration(1, 100));
 
             writer.Build();
             if (factory == null)

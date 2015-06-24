@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
+using System.Security.Policy;
 using Qoollo.Impl.Collector.Parser;
 using StyroDB.Adapter.Converter;
 
@@ -16,7 +17,34 @@ namespace StyroDB.Adapter.Internal
             var expr = CreateListExpr(script, idDescription);
             SetUserParams(expr, userParameters);
             AddWrapperNamesToQuery(expr);
+            expr = SetRightOrderForExpr(expr);
             return expr;
+        }
+
+        private static List<KeyValuePair<string, string>> SetRightOrderForExpr(List<KeyValuePair<string, string>> expr)
+        {
+            var ret = new List<KeyValuePair<string, string>>();
+            
+            MoveExprFromListToList(expr, ret, "OrderBy");
+            MoveExprFromListToList(expr, ret, "Where");
+            MoveExprFromListToList(expr, ret, "Take");
+            ret.AddRange(expr);
+            return ret;
+        }
+
+        private static void MoveExprFromListToList(List<KeyValuePair<string, string>> oldList,
+            List<KeyValuePair<string, string>> newList, string exprName)
+        {
+            int pos = -1;
+            do
+            {
+                if (pos >= 0)
+                {
+                    newList.Add(oldList[pos]);
+                    oldList.RemoveAt(pos);
+                }
+                pos = oldList.FindPosition(x => x.Key == exprName);
+            } while (pos >= 0);
         }
 
         private static void SetUserParams(List<KeyValuePair<string, string>> expr, List<FieldDescription> userParameters)

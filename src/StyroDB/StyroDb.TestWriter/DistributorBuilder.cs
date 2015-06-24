@@ -12,9 +12,9 @@ namespace StyroDb.TestWriter
         private DistributorApi _distributor;
 
         public void Start()
-        {            
+        {
             //Qoollo.Logger.Initialization.Initializer.InitializeLoggerInAssembly(
-            //    LoggerDefault.ConsoleLogger, typeof (DistributorApi).Assembly);
+            //    LoggerDefault.ConsoleLogger, typeof(DistributorApi).Assembly);
 
             var net = new DistributorNetConfiguration(ConfigurationHelper.Instance.DistributorHost,
                 ConfigurationHelper.Instance.PortForProxy, ConfigurationHelper.Instance.PortForWriter,

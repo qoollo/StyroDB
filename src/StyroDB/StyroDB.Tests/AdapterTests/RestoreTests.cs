@@ -12,7 +12,6 @@ using Qoollo.Impl.Common.Data.Support;
 using Qoollo.Impl.Common.HashFile;
 using Qoollo.Impl.Configurations;
 using Qoollo.Impl.NetInterfaces.Writer;
-using StyroDB.Adapter.Converter;
 using StyroDB.Adapter.StyroClient;
 using StyroDB.Adapter.Wrappers;
 using StyroDB.InMemrory;
@@ -139,6 +138,37 @@ namespace StyroDB.Tests.AdapterTests
             var total = GetCount(Table, count, data => data.StyroMetaData.IsLocal) +
                         GetCount(table, count, data => !data.StyroMetaData.IsDelete);
             total.ShouldBeEqualTo(count);
+            writer.Dispose();
+        }
+
+        [TestMethod]
+        public void Writer_RestorWithTimeoutDelete_DeleteCountEqualTotalMinusLocalCount()
+        {
+            const int count = 10;
+            for (int i = 0; i < count; i++)
+            {
+                Channel.ProcessSync(CreateData(i, i, OperationName.Create));
+                var data = Table.Read(i);
+                data.Value.ShouldBeEqualTo(i);
+            }
+
+            int local = GetCount(Table, count, data => data.StyroMetaData.IsLocal);
+
+            var factory = new StyroDbFactory<int, int>(TableName, new IntDataProvider());
+            var writer = BuildWriter(PortForDistributor2, PortForCollector2, factory, 1000000);
+            var table = GetTable<int, int>(factory, TableName);
+
+            writer.Api.Restore(new ServerAddress(Host, DistributorPortForWriter), false);
+            Thread.Sleep(1000);
+
+            int delete = GetCount(Table, count, data => data.StyroMetaData.IsDelete);
+            delete.ShouldBeEqualTo(count - local);
+
+            GetCount(table, count, data => data.StyroMetaData.IsLocal).ShouldBeEqualTo(delete);
+
+            Thread.Sleep(3000);
+
+            GetCount(Table, count, data => true).ShouldBeEqualTo(local);
             writer.Dispose();
         }
 
